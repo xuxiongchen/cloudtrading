@@ -7,6 +7,9 @@
         <dependent-module archiveName="cloudtrading-warehouse-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/cloudtrading-warehouse/cloudtrading-warehouse">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="cloudtrading-pub-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/cloudtrading-pub/cloudtrading-pub">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="java-output-path" value="/cloudtrading-analysis/target/classes"/>
         <property name="context-root" value="cloudtrading-analysis"/>
     </wb-module>

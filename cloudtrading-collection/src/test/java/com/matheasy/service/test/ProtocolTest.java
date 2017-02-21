@@ -75,40 +75,64 @@ public class ProtocolTest {
 		logger.info("testt:" + test_Manager(requestUrl,key,value));
 	}
 	@Test
-	public void test_silverAlloy() throws IOException, Exception {
+	public void test_countSilverAlloy() throws IOException, Exception {
 		
 		String requestUrl = url + "/analysis/silverAlloy";
+		String[] key={"month","day"};
+//		for(int i=28;i<=30;i++){
+//			Object[] value={11,i};
+//			logger.info("test:"+"11月"+i+"日" + test_Manager(requestUrl,key,value));
+//		}
+//		for(int i=1;i<=8;i++){
+			Object[] value={12,9};
+			logger.info("test:"+"12月"+9+"日"  + test_Manager(requestUrl,key,value));
+//		}
+//		Object[] value={11,28};
+//		logger.info("test:"+"12月"+7+"日" + test_Manager(requestUrl,key,value));
+	}
+	@Test
+	public void test_countSilverAlloyInvest() throws IOException, Exception {
+		String requestUrl = url + "/analysis/countSilverAlloy";
 		String[] key={"month","day"};
 		for(int i=28;i<=30;i++){
 			Object[] value={11,i};
 			logger.info("test:"+"11月"+i+"日" + test_Manager(requestUrl,key,value));
 		}
-		
-		for(int i=1;i<=6;i++){
+		for(int i=1;i<=8;i++){
 			Object[] value={12,i};
 			logger.info("test:"+"12月"+i+"日"  + test_Manager(requestUrl,key,value));
 		}
-	}
-	@Test
-	public void test_countSilverAlloy() throws IOException, Exception {
-		String requestUrl = url + "/analysis/countSilverAlloy";
-		String[] key={"month","day"};
-		Object[] value={12, 2};
-		logger.info("testt:" + test_Manager(requestUrl,key,value));
 	}
 
 	@Test
 	public void test_countGoldCopper() throws IOException, Exception {
 		String requestUrl = url + "/analysis/countGoldCopper";
 		String[] key={"month","day"};
-		Object[] value={12, 2};
-		logger.info("testt:" + test_Manager(requestUrl,key,value));
+//		for(int i=28;i<=30;i++){
+//			Object[] value={11,i};
+//			logger.info("test银基合金:"+"11月"+i+"日" + test_Manager(requestUrl,key,value));
+//		}
+//		for(int i=11;i<=20;i++){
+			Object[] value={12,15};
+			logger.info("test银基合金:"+"12月"+15+"日"  + test_Manager(requestUrl,key,value));
+//		}
+//		Object[] value={11,28};
+//		logger.info("testt:" + test_Manager(requestUrl,key,value));
 	}
 	@Test
 	public void test_countCorundum() throws IOException, Exception {
 		String requestUrl = url + "/analysis/countCorundum";
 		String[] key={"month","day"};
-		Object[] value={12, 2};
-		logger.info("testt:" + test_Manager(requestUrl,key,value));
+//		for(int i=28;i<=30;i++){
+//			Object[] value={11,i};
+//			logger.info("test刚玉:"+"11月"+i+"日" + test_Manager(requestUrl,key,value));
+//		}
+//		for(int i=1;i<=8;i++){
+			Object[] value={12,9};
+			logger.info("test刚玉:"+"12月"+9+"日"  + test_Manager(requestUrl,key,value));
+//		}
+//		Object[] value={11,28};
+//		logger.info("testt:" + test_Manager(requestUrl,key,value));
+		//logger.info("testt:" + test_Manager(requestUrl,key,value));
 	}
 }
