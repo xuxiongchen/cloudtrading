@@ -1,6 +1,7 @@
 package com.cloudtrading.analysis.entity.portal;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -9,6 +10,7 @@ import com.cloudtrading.pub.Direction;
 import com.cloudtrading.pub.Position;
 import com.cloudtrading.pub.Production;
 import com.cloudtrading.pub.Production.Period;
+import com.cloudtrading.warehouse.utils.DateFormatUtil;
 
 public class Observe {
 	private Position observePosition;		//观察的起点
@@ -59,12 +61,20 @@ public class Observe {
 	
 	@Override
 	public String toString() {
-		return "Observe [observePosition=" + observePosition + ", haveResult="
-				+ haveResult + ", isEnd=" + isEnd + ", direction=" + direction
-				+ ", period=" + period + ", production=" + production
-				+ ", remark=" + remark + ", recentPositions=" + recentPositions
-				+ ", recordCount=" + recordCount + ", calKCount=" + calKCount
-				+ "]";
+		String str = "观察点:" + observePosition. getValue()+ ","+DateFormatUtil.formatSimpleDate(new Date(observePosition.getValueTime() ))+
+				", 是否有结果:"+ (haveResult?"是":"否") + ", 是否结束:" + (isEnd?"是":"否") + ", 方向:" + direction.getName()
+				+",观察时长:"+getTime()/60 +"分钟"+ ", 周期:" + period.getName() + ", 产品:" + production.getName()
+				+ ", 备注:" + remark;
+		str += "\n最近点变化平均值:" + getAverageValue();
+		str += ",上涨点数占百分比:" + getIncreasePercent();
+		str += ",下跌点数占百分比:" + getDecreasePercent();
+		str += "\n最近点之间K值:";
+		List<Float> recentK = getRecentK();
+		for(Float f : recentK){
+			int f2 = (int) (f*1000);
+			str += (float)(f2/1000) + ",";
+		}
+		return str;
 	}
 
 	/**
@@ -72,7 +82,7 @@ public class Observe {
 	 * 
 	 * @return
 	 */
-	public List<Float> recentK() {
+	public List<Float> getRecentK() {
 		List<Float> kList = new ArrayList<Float>();
 		if(recentPositions.size() > 1){
 			for(int i = 1; ( i < recentPositions.size() && i < calKCount); i++){
@@ -104,7 +114,7 @@ public class Observe {
 	}
 	
 	/**
-	 * 获取平均值(实际平均值减去观察起点值，除以止损止盈点)
+	 * 获取变化平均值(实际平均值减去观察起点值，除以止损止盈点)
 	 * 
 	 * @return
 	 */

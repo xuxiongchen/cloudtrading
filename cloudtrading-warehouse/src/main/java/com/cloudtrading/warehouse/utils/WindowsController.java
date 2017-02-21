@@ -94,6 +94,7 @@ public class WindowsController {
 		rb.mouseMove(Window.yesButtonx, Window.yesButtony);
 		pressMouse(rb, InputEvent.BUTTON1_MASK, 20);
 		pressMouse(rb, InputEvent.BUTTON1_MASK, 20);
+		logger.info("点击同意规则");
 	}
 	
 	/**
@@ -203,7 +204,7 @@ public class WindowsController {
 		rb.mouseMove(Window.inpustPassWordSubmitx, Window.inpustPassWordSubmity);
 		pressMouse(rb, InputEvent.BUTTON1_MASK, 20);
 		java.awt.Toolkit.getDefaultToolkit().beep();
-		logger.info("确定");
+		logger.info("确定输入密码");
 	}
 	/**
 	 * 点击取消

@@ -98,7 +98,7 @@ public class AnalysisController {
 		int day=requestData.getInt("day", 0);
 		Long time9=DateFormatUtil.getTime(2016,month,day,9,0,0);
 		Long time430=DateFormatUtil.getTime(2016,month,day+1,4,30,0);
-		JsonUnitData response=analysisService.analysisGoldCopper12_8(time9,time430);
+		JsonUnitData response=analysisService.analysisGoldCopper12_24(time9,time430);
 		MVCUtil.returnData(response.getResponseData());
 	}
 	@RequestMapping(value = "/countCorundum")

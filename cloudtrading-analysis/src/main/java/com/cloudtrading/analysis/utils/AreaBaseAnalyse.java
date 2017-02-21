@@ -1,6 +1,7 @@
 package com.cloudtrading.analysis.utils;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -14,8 +15,8 @@ import com.cloudtrading.pub.Production;
 import com.cloudtrading.pub.Production.Period;
 
 
-public abstract class BaseAnalyse {
-	protected static final Logger logger = LoggerFactory.getLogger(BaseAnalyse.class);
+public abstract class AreaBaseAnalyse {
+	protected static final Logger logger = LoggerFactory.getLogger(AreaBaseAnalyse.class);
 	private Production production;       					//产品类型
 	
 	private boolean existCalculate;						//是否做了预测
@@ -29,15 +30,17 @@ public abstract class BaseAnalyse {
 	private Position minPosition;							//当日最低点
 	private Position lastPosition;							//上一次传入的点数
 	private Position currentPosition;						//当前点数
-
+	private LinkedList<Position> positionList;  		//历史位置保留
+	private LinkedList<Long> areaList;				//历史面积保留
 	private int allowDataLoseTime=30*1000;					//最大允许数据缺失时间
-	
+	private int positionListSize;				//中金铜短期止损止盈
+	private int areaListSize;					//分析预测临界值
 	/**
 	 * 构造
 	 * 
 	 * @param production 产品类型，重写请先调用父类方法
 	 */
-	public BaseAnalyse(Production production){
+	public AreaBaseAnalyse(Production production, int positionListSize,int areaListSize){
 		this.maxPosition=new Position(0, 0);
 		this.minPosition=new Position(0, 0);
 		this.lastPosition=new Position(0, 0);
@@ -46,8 +49,11 @@ public abstract class BaseAnalyse {
 		this.sameDirectionCount=0;
 		this.existCalculate = false;
 		calculates = new ArrayList<Calculate>();
-		
+		this.positionList=new LinkedList<Position>();
+		this.areaList=new LinkedList<Long>();
 		this.production=production;	
+		this.positionListSize=positionListSize;
+		this.areaListSize=areaListSize;
 	}
 	
 	/**
@@ -66,12 +72,52 @@ public abstract class BaseAnalyse {
 		}else if(position.getValue() != lastPosition.getValue()){		//股点有变化
 			currentPosition = position;	
 			dealLastCalculate();
+			setAreaPosition(position);
 			calculate();
 		}	
 		lastPosition = position;
 		setLimitValue(position);
+		
+	}
+	/**
+	 * 设置数据存储
+	 * @param position
+	 * @return
+	 */
+	public Position setAreaPosition(Position position){
+		positionList.add(position);
+		if(positionList.size()>positionListSize){
+			Position firstPosition=positionList.pop();
+			countArea(positionList);
+			return firstPosition;
+		}
+		return null;
 	}
 	
+	/**
+	 * 计算一段时间内的面积
+	 * @param positionList
+	 * @return
+	 */
+	public Long countArea(LinkedList<Position> positionList) {
+		if(positionList.size()==0){
+			return null;
+		}
+		Position firstPosition=positionList.get(0);
+		Long area=0l;
+		for(int i=1;i<positionList.size();i++){
+			Position secondPosition=positionList.get(i);
+			area+=(firstPosition.getValue()+firstPosition.getValue())*
+					(secondPosition.getValueTime()-firstPosition.getValueTime())/2;
+			firstPosition=secondPosition;
+		}
+		areaList.add(area);
+		if(areaList.size()>areaListSize){
+			return areaList.pop();
+		}
+		return areaList.getFirst();
+	}
+
 	/**
 	 * 输出所有预测结果
 	 * 
@@ -115,7 +161,7 @@ public abstract class BaseAnalyse {
 	 * @param period
 	 * @return 
 	 */
-	protected synchronized  final boolean makeCalculate(Direction direction, Period period){
+	protected  final boolean makeCalculate(Direction direction, Period period){
 		if(calculates.size()  > 0){
 			Calculate lastCalculate = calculates.get(calculates.size() - 1);
 			if(currentPosition.getValueTime() - lastCalculate.getPosition().getValueTime() < 60*1000){
@@ -260,4 +306,37 @@ public abstract class BaseAnalyse {
 		Assert.isTrue(allowDataLoseTime > 3);
 		this.allowDataLoseTime = allowDataLoseTime;
 	}
+
+	public LinkedList<Position> getPositionList() {
+		return positionList;
+	}
+
+	public void setPositionList(LinkedList<Position> positionList) {
+		this.positionList = positionList;
+	}
+
+	public LinkedList<Long> getAreaList() {
+		return areaList;
+	}
+
+	public void setAreaList(LinkedList<Long> areaList) {
+		this.areaList = areaList;
+	}
+
+	public int getPositionListSize() {
+		return positionListSize;
+	}
+
+	public void setPositionListSize(int positionListSize) {
+		this.positionListSize = positionListSize;
+	}
+
+	public int getAreaListSize() {
+		return areaListSize;
+	}
+
+	public void setAreaListSize(int areaListSize) {
+		this.areaListSize = areaListSize;
+	}
+	
 }

@@ -37,7 +37,7 @@ public class AppContext {
 	
 	public static void init()
 			throws Exception {
-		TessreactUtil.createSreen();
+		//TessreactUtil.createSreen();
 		AppContext.sysconfigService = SpringContextHolder.getBean(SysconfigService.class);
 		final CatchDataScheduledService catchDataScheduledService = SpringContextHolder.getBean(CatchDataScheduledService.class);
 		// 初始化

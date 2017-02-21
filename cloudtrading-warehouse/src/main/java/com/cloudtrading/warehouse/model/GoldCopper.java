@@ -8,7 +8,7 @@ package com.cloudtrading.warehouse.model;
 public interface GoldCopper {
 
 	//屏幕的位置（92，190）
-		int x=222+Window.x;
+		int x=330+Window.x;
 		int y=170+Window.y;
 		
 		
