@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta name="decorator" content="default" />
+		<title>学生信息管理</title>
+	</head>
+
+	<body>
+
+		<div class="page-content">
+			<div class="page-header">
+				<h1>学生信息管理</h1>
+			</div>
+			<!-- /.page-header -->
+			<div class="row">
+				<div class="col-xs-12">
+					<!-- PAGE CONTENT BEGINS -->
+					<form class="form-inline" action="${ctx}/student/search" method="post">
+						<div class="row">
+							<div class="col-xs-12 col-sm-8">
+								<div class="input-group">
+									学号：<input name="studentNo" value="${studentInfo.studentNo}" type="text" class="input-small" /> 班内编号：
+									<input name="studentClassNo" value="${studentInfo.studentClassNo}" type="text" class="input-small" /> 社区昵称：
+									<input name="userName" value="${studentInfo.userName}" type="text" class="input-small" /> &nbsp;
+									<button type="submit" class="btn btn-purple btn-sm">
+									查询 <i class="icon-search icon-on-right bigger-110"></i>
+								</button>
+									<button class="btn btn-sm btn-purple" data-toggle="modal" onclick="addStudentLoad();">
+									<i class="icon-edit bigger-120"></i>添加学生
+								</button>
+									<br> 学校：
+									<input name="schoolName" value="${studentInfo.schoolName}" type="text" class="input-small" /> 年级：
+									<input name="classGrade" value="${studentInfo.classGrade}" type="text" class="input-small" /> 班级：
+									<input name="classNo" value="${studentInfo.classNo}" type="text" class="input-small" />
+									<br> 真实姓名：
+									<input name="realName" value="${studentInfo.realName}" type="text" class="input-small" /> 性别：
+									<select name="sex" class="input-no">
+											<option value="">请选择性别</option>
+											<option value="1">男</option>
+											<option value="2">女</option>
+									</select> 电话：
+									<input name="phone" value="${studentInfo.phone}" type="text" class="input-small" /> 邮箱：
+									<input name="email" value="${studentInfo.email}" type="text" class="input-small" />
+
+								</div>
+							</div>
+						</div>
+					</form>
+
+					<div id="add_student-modal" class="modal fade" tabindex="-1" role="dialog">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="blue bigger">新增学生</h4>
+								</div>
+								<div class="modal-body overflow-visible">
+									<form class="form-horizontal" action="${ctx}/student/add" id="add_student-form" method="post">
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="from-group">
+													<div class="input-group">
+														<label class="col-sm-4 control-label no-padding-right">学号：</label>
+														<div class="col-sm-7">
+															<input name="studentNo" value="" style="width:200px;" type="text" class="input-small" />
+														</div>
+														<label class="col-sm-4 control-label no-padding-right">真实姓名：</label>
+														<div class="col-sm-7">
+															<input name="realName" value="" style="width:200px;" type="text" class="input-small" />
+														</div>
+														<label class="col-sm-4 control-label no-padding-right">性别：</label>
+														<div class="col-sm-7">
+															<select id="add_sex" name="sex" class="input-no" style="width:200px;">
+																<option value="1">男</option>
+																<option value="2">女</option>
+															</select>
+														</div>
+														<label class="col-sm-4 control-label no-padding-right">学校：</label>
+														<div class="col-sm-7">
+															<select name="schoolId" id="add_school_id" style="width:200px;" class="input-no">
+															</select>
+														</div>
+														<label class="col-sm-4 control-label no-padding-right">入学日期：</label>
+														<div class="col-sm-7">
+															<input id="stu_add_enroll_date" name="enroll_date" value="2015-09-01" style="width:200px;" type="date" />
+														</div>
+														<label class="col-sm-4 control-label no-padding-right">年级：</label>
+														<div class="col-sm-7">
+															<input name="classGrade" value="" style="width:200px;" type="text" class="input-small" />
+														</div>
+														<label class="col-sm-4 control-label no-padding-right">班号：</label>
+														<div class="col-sm-7">
+															<input name="classNo" value="" style="width:200px;" type="text" class="input-small" />
+														</div>
+														<label class="col-sm-4 control-label no-padding-right">学生班内编号：</label>
+														<div class="col-sm-7">
+															<input name="studentClassNo" value="" style="width:200px;" type="text" class="input-small" />
+														</div>
+														<label class="col-sm-4 control-label no-padding-right">社区昵称：</label>
+														<div class="col-sm-7">
+															<input name="userName" value="" style="width:200px;" type="text" class="input-small" />
+														</div>
+														<label class="col-sm-4 control-label no-padding-right">电话：</label>
+														<div class="col-sm-7">
+															<input name="phone" value="" style="width:200px;" type="text" class="input-small" />
+														</div>
+														<label class="col-sm-4 control-label no-padding-right">邮箱：</label>
+														<div class="col-sm-7">
+															<input name="email" value="" style="width:200px;" type="text" class="input-small" />
+														</div>
+
+														<div class="from-group">
+															<label class="col-sm-11 control-label no-padding-right"></label>
+															<label class="col-sm-3 control-label no-padding-right" style="margin-left: 47px;">班级头像*：</label>
+															<div class="col-sm-5">
+																<input class="input-file uniform_on" style="width: 200px;" id="add_class_image-file" type="file" />
+															</div>
+															<input type="hidden" id="add_class_image-fileUrl" name="classPortraitPhoto">
+														</div>
+														<div class="from-group">
+															<label class="col-sm-11 control-label no-padding-right"></label>
+															<label class="col-sm-4 control-label no-padding-right">社区头像：</label>
+															<div class="col-sm-7">
+																<input name="classPortraitPhoto" id="add_community_image-file" class="input-file uniform_on" style="width: 200px;" type="file" />
+															</div>
+															<input id="add_community_image-fileUrl" name="communityPortraitPhoto" type="hidden">
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button class="btn btn-sm btn-info" onclick="$('#add_student-form').submit();">
+										<i class="icon-ok"></i> 提交
+									</button>
+									<button class="btn btn-sm" data-dismiss="modal">
+										<i class="icon-remove"></i> 取消
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div id="edit_password-modal" class="modal fade" tabindex="-1" role="dialog">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="blue bigger">管理密码</h4>
+								</div>
+								<div class="modal-body overflow-visible">
+									<form class="form-horizontal" action="" id="edit_password-form" method="post">
+										<div class="row">
+											<div class="col-xs-12">
+												<div class="from-group">
+													<div class="input-group">
+														<label class="col-sm-4 control-label no-padding-right">原密码为：</label>
+														<div class="col-sm-7">
+															<input id="oldPassword" name="oldPassword" style="width:200px;" type="text" disabled="disabled" class="col-xs-10 col-sm-5" />
+														</div>
+														<label class="col-sm-4 control-label no-padding-right">请输入新密码：</label>
+														<div class="col-sm-7">
+															<input id="password1" name="password1" value="" style="width:200px;" type="password" class="col-xs-10 col-sm-5" />
+														</div>
+														<label class="col-sm-4 control-label no-padding-right">请再次输入新密码：</label>
+														<div class="col-sm-7">
+															<input id="password2" name="password2" value="" style="width:200px;" type="password" class="col-xs-10 col-sm-5" />
+														</div>
+														<input id="edit_password" name="id" type="hidden" />
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button class="btn btn-sm btn-info" onclick="sureEditPassword();">
+										<i class="icon-ok"></i> 修改
+									</button>
+									<button class="btn btn-sm" data-dismiss="modal">
+										<i class="icon-remove"></i> 取消
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="table-responsive">
+								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+									<thead>
+										<tr>
+											<!-- <th class="center"><label> <input type="checkbox"
+												class="ace" /> <span class="lbl"></span>
+										</label></th> -->
+											<th>学号</th>
+											<th>学生班内编号</th>
+											<th>社区昵称</th>
+											<th>真实姓名</th>
+											<th>学校</th>
+											<th>年级</th>
+											<th>班号</th>
+											<th>性别</th>
+											<th>邮箱</th>
+											<th>电话</th>
+											<th>班级头像</th>
+											<th>社区头像</th>
+											<th></th>
+											<th></th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<#list studentInfoList as studentInfo>
+											<tr>
+												<!-- <td class="center"><label> <input type="checkbox"
+												class="ace" /> <span class="lbl"></span>
+										</label></td> -->
+												<td>${studentInfo.studentNo}</td>
+												<td>${studentInfo.studentClassNo}</td>
+												<td>${studentInfo.userName}</td>
+												<td>${studentInfo.realName}</td>
+												<td>${studentInfo.schoolName}</td>
+												<td>${studentInfo.classGrade}</td>
+												<td>${studentInfo.classNo}</td>
+												<td>
+													<#if studentInfo.sex==1>男</#if>
+													<#if studentInfo.sex==2>女</#if>
+
+												</td>
+												<td>${studentInfo.email}</td>
+												<td>${studentInfo.phone}</td>
+												<td>
+													<img src="${url_tag+studentInfo.classPortraitPhoto}" width="60" height="60"></img>
+												</td>
+												<td>
+													<img src="${url_tag+studentInfo.communityPortraitPhoto}" width="60" height="60"></img>
+												</td>
+												<td>
+													<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+														<button class="btn btn-sm btn-purple" onclick="editstudent('${studentInfo.id}')" data-rel="tooltip">
+															<span> <i class="icon-edit bigger-120"></i>编辑
+															</span>
+														</button>
+													</div>
+												</td>
+
+												<td>
+													<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+														<button class="btn btn-sm btn-purple" onclick="editPassword('${studentInfo.id}')" data-rel="tooltip">
+															<span> <i class="icon-edit bigger-120"></i>管理密码
+															</span>
+														</button>
+													</div>
+												</td>
+
+												<td>
+													<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+														<button class="btn btn-sm btn-danger" onclick="deletestudent('${studentInfo.id}')" data-rel="tooltip">
+															<span> <i class="icon-trash bigger-120"></i>删除
+															</span>
+														</button>
+													</div>
+												</td>
+											</tr>
+										</#list>
+									</tbody>
+								</table>
+							</div>
+							<#include "/common/common_page.html">
+								<!-- /.table-responsive -->
+						</div>
+						<!-- /span -->
+					</div>
+					<!-- /row -->
+					<!-- PAGE CONTENT ENDS -->
+				</div>
+				<!-- /.col -->
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /.page-content -->
+
+		<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse"> <i class="icon-double-angle-up icon-only bigger-110"></i>
+		</a>
+		<div id="edit_student-modal" class="modal fade" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="blue bigger">编辑学生</h4>
+					</div>
+
+					<div class="modal-body overflow-visible">
+						<form id="edit_student-form" class="form-horizontal" role="form" action="${ctx}/student/ajax/edit" method="post"></form>
+					</div>
+
+					<div class="modal-footer">
+						<button class="btn btn-sm btn-info" onclick="$('#edit_student-form').submit();">
+						<i class="icon-ok"></i> 保存
+					</button>
+						<button class="btn btn-sm" data-dismiss="modal">
+						<i class="icon-remove"></i> 取消
+					</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- inline scripts related to this page -->
+		<script type="text/javascript">
+			function deletestudent(id) {
+				$.messager.confirm("删除学生", "确定要删除该学生信息吗!", function() {
+					window.open("/matheasy-portal/student/delete?id=" + id, "_self");
+				});
+			}
+
+			function editPassword(id) {
+				$("#edit_password-modal").modal('show');
+				$("#edit_password").val(id);
+				$("#password1").val("");
+				$("#password2").val("");
+				$.ajax({
+					type: "get",
+					url: "${ctx}/student/ajax/getPassword?id=" + id,
+					async: true,
+					success: function(data) {
+						data = $.parseJSON(data);
+						if (data.status == "1") {
+							$("#oldPassword").val(data.data.password);
+						} else {
+							$("#oldPassword").val("查询出错");
+							alert(data.errormsg);
+						}
+					}
+				});
+			}
+
+			function editstudent(id) {
+				$('#edit_student-modal').modal('show');
+				$('#edit_student-form').load(
+					"${ctx}/student/edit?id=" + id,
+					function() {}
+				);
+			}
+
+			function addStudentLoad() {
+				$("#add_student-modal").modal('show');
+				getSchoolList();
+			}
+			$(function() {
+				$("#add_student-form").validate();
+				$("#add_student-form").bind(
+					'submit',
+					function() {
+						//校验表单
+						if (!$(this).valid()) {
+							return false;
+						}
+						ajaxSubmit(this, function(response) {
+							response = $.parseJSON(response);
+							if (response.status == 1) {
+								alert("添加成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						});
+						return false;
+					});
+				$("#edit_student-form").validate();
+				$("#edit_student-form").bind(
+					'submit',
+					function() {
+						//校验表单
+						if (!$(this).valid()) {
+							return false;
+						}
+						ajaxSubmit(this, function(response) {
+							response = $.parseJSON(response);
+							if (response.status == 1) {
+								alert("修改成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						});
+						return false;
+					});
+			});
+			jQuery(function($) {
+				$('#add_class_image-file').uploadify({
+					'swf': '${ctx}/static/swf/uploadify.swf',
+					'uploader': '${ctx}/common/question_image',
+					'buttonText': '选择上传的学生头像',
+					'method': 'post',
+					'fileTypeExts': '*.jpg;*.png;*.gif;*.bmp;*.jpeg;',
+					'fileObjName': 'file',
+					'multi': true,
+					'onUploadSuccess': function(file, data, response) {
+						data = $.parseJSON(data);
+						if (data.status == 1) {
+							$("#add_class_image-fileUrl").val(data.data.image_url);
+						} else {
+							alert(data.errormsg);
+						}
+					},
+				});
+				$('#add_community_image-file').uploadify({
+					'swf': '${ctx}/static/swf/uploadify.swf',
+					'uploader': '${ctx}/common/question_image',
+					'buttonText': '选择上传的学生头像',
+					'method': 'post',
+					'fileTypeExts': '*.jpg;*.png;*.gif;*.bmp;*.jpeg;',
+					'fileObjName': 'file',
+					'multi': true,
+					'onUploadSuccess': function(file, data, response) {
+						data = $.parseJSON(data);
+						if (data.status == 1) {
+							$("#add_community_image-fileUrl").val(data.data.image_url);
+						} else {
+							alert(data.errormsg);
+						}
+					},
+				});
+			});
+
+			function getSchoolList() {
+				var href = "${ctx}/school/get_school_list";
+				$.ajax({
+					url: href,
+					async: false,
+					type: "POST",
+					data: {
+						sss: ""
+					},
+					success: function(data, status) {
+						data = $.parseJSON(data);
+						var chapter = document.getElementById("add_school_id");
+						var chapteOption = "";
+						for (var i in data.result) {
+							chapteOption += "<option value=" + data.result[i].school_id + ">" + data.result[i].school_name + "</option>";
+						}
+						chapter.innerHTML = chapteOption;
+					}
+				});
+			}
+
+			function sureEditPassword() {
+				var password1 = $.trim($("#password1").val());
+				var password2 = $.trim($("#password2").val());
+				var id = $.trim($("#edit_password").val());
+				if (password1 == "" || password2 == "") {
+					alert("密码不能为空");
+					return;
+				}
+				if (password1 != password2) {
+					alert("两次密码不一致");
+					return;
+				}
+				$.ajax({
+					type: "post",
+					url: "${ctx}/student/ajax/editPassword",
+					async: true,
+					data: {
+						password1: password1,
+						password2: password2,
+						id: id
+					},
+					success: function(data) {
+						data = $.parseJSON(data);
+						if (data.status == "1") {
+							alert("修改密码成功");
+							window.location.reload();
+						} else {
+							alert(data.errormsg);
+						}
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

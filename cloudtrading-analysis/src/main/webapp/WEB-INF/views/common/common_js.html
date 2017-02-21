@@ -1,0 +1,153 @@
+
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+
+<!-- <script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script> -->
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<![endif]-->
+
+<!--[if !IE]> -->
+
+<script type="text/javascript">
+	window.jQuery
+			|| document.write("<script src='${ctx}/static/bootstrap/js/jquery-2.0.3.min.js'>"
+					+ "<"+"/script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+ window.jQuery || document.write("<script src='${ctx}/static/bootstrap/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+	if ("ontouchend" in document)
+		document.write("<script src='${ctx}/static/bootstrap/js/jquery.mobile.custom.min.js'>"
+				+ "<"+"/script>");
+</script>
+<script src="${ctx}/static/bootstrap/js/bootstrap.min.js"></script>
+<script src="${ctx}/static/bootstrap/js/typeahead-bs2.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<script src="${ctx}/static/bootstrap/js/jquery.dataTables.min.js"></script>
+<script src="${ctx}/static/bootstrap/js/jquery.dataTables.bootstrap.js"></script>
+<script src="${ctx}/static/bootstrap/js/jquery.colorbox-min.js"></script>
+
+<script src="${ctx}/static/bootstrap/js/bootbox.min.js"></script>
+
+<!-- ace scripts -->
+
+<script src="${ctx}/static/bootstrap/js/ace-elements.min.js"></script>
+<script src="${ctx}/static/bootstrap/js/ace.min.js"></script>
+
+<script src="${ctx}/static/bootstrap/js/jquery.validate.min.js"></script>
+<script src="${ctx}/static/bootstrap/js/jquery_validate_messages_zh.min.js"></script>
+<script src="${ctx}/static/uploadify/jquery.uploadify-3.1.min.js"></script>
+<!-- 图片上传 -->
+<script type="text/javascript">
+	/* $(function() {
+		$(".imageupload").each(
+				function() {
+					var columnid = $(this).attr("columnid");
+					$(this).uploadify(
+							{
+								'swf' : '${ctx}/swf/uploadify.swf',
+								'uploader' : '${ctx}/imageupload',
+								'buttonText' : '选择要上传的图片',
+								'method' : 'post',
+								'fileTypeExts' : '.gif;*.jpg;*.png',
+								'fileObjName' : 'file',
+								'multi' : false,
+								'onUploadSuccess' : function(file, data,
+										response) {
+									data = $.parseJSON(data);
+									if (data.status == 1) {
+										$('#' + columnid)
+												.val(data.data.fileuri);
+										$('#' + columnid + '_href').attr(
+												"href", data.data.fileurl);
+										$('#' + columnid + '_src').attr("src",
+												data.data.fileurl);
+									} else {
+										alert(data.errormsg);
+									}
+								},
+							});
+				});
+	}); */
+</script>
+
+<script type="text/javascript">
+	$(function() {
+		var colorbox_params = {
+			reposition : true,
+			scalePhotos : true,
+			scrolling : false,
+			//previous : '<i class="icon-arrow-left"></i>',
+			//next : '<i class="icon-arrow-right"></i>',
+			close : '&times;',
+			//current : '{current} of {total}',
+			maxWidth : '100%',
+			maxHeight : '100%',
+			onOpen : function() {
+				document.body.style.overflow = 'hidden';
+			},
+			onClosed : function() {
+				document.body.style.overflow = 'auto';
+			},
+			onComplete : function() {
+				$.colorbox.resize();
+			}
+		};
+
+		$('[data-rel="colorbox"]').colorbox(colorbox_params);
+		//$("#cboxLoadingGraphic").append(
+		//		"<i class='icon-spinner orange'></i>");//let's add a custom loading icon
+
+		/**$(window).on('resize.colorbox', function() {
+			try {
+				//this function has been changed in recent versions of colorbox, so it won't work
+				$.fn.colorbox.load();//to redraw the current frame
+			} catch(e){}
+		});*/
+	});
+</script>
+<script type="text/javascript">
+	//将form转为AJAX提交
+	function ajaxSubmit(frm, fn) {
+		var dataPara = getFormJson(frm);
+		$.ajax({
+			url : frm.action,
+			type : frm.method,
+			data : dataPara,
+			success : fn
+		});
+	}
+
+	//将form中的值转换为键值对。
+	function getFormJson(frm) {
+		var o = {};
+		var a = $(frm).serializeArray();
+		$.each(a, function() {
+			if (o[this.name] !== undefined) {
+				if (!o[this.name].push) {
+					o[this.name] = [ o[this.name] ];
+				}
+				o[this.name].push(this.value || '');
+			} else {
+				o[this.name] = this.value || '';
+			}
+		});
+
+		return o;
+	}
+</script>

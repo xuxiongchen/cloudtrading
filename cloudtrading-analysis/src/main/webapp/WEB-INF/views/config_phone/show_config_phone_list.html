@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta name="decorator" content="default" />
+		<title>注册教师审核管理</title>
+	</head>
+
+	<body>
+
+		<div class="page-content">
+			<div class="page-header">
+				<h1>配置手机接收短信管理</h1>
+			</div>
+			<!-- /.page-header -->
+			<div class="row">
+				<div class="col-xs-12">
+					<!-- PAGE CONTENT BEGINS -->
+					<form class="form-inline" action="${ctx}/config_phone/search" method="post">
+						<div class="row">
+							<div class="col-xs-12 col-sm-8">
+								<div class="input-group">
+									手机号：<input name="phone" value="${configPhoneVo.phone}" type="text" class="input-small" /> 
+									类型：<select id="typeSearch" name="typeId">
+											<option value="">请选择</option>
+										</select>
+									<button type="submit" class="btn btn-purple btn-sm">
+										查询 <i class="icon-search icon-on-right bigger-110"></i>
+									</button>
+									<button class="btn btn-sm btn-purple" data-toggle="modal" onclick="add();">
+										<i class="icon-edit bigger-120"></i>添加
+									</button>
+								</div>
+							</div>
+						</div>
+					</form>
+
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="table-responsive">
+								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+									<thead>
+										<tr>
+											<td style="display: none;"></td>
+											<th>手机号</th>
+											<th>类型</th>
+											<td></td>
+										</tr>
+									</thead>
+									<tbody>
+										<#list configPhoneList as configPhone>
+											<tr>
+												<td style="display: none;">${configPhone.phoneId}</td>
+												<td>${configPhone.phone}</td>
+												<td>
+													<#list configPhone.list as type>
+														${type.type}、
+													</#list>
+												</td>
+												<td>
+													<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+														<button class="btn btn-sm btn-purple" onclick="update('${configPhone.phoneId}');" data-rel="tooltip">
+															<span><i class="icon-edit bigger-120"></i> 修改
+															</span>
+														</button>
+													</div>
+													<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+															<button class="btn btn-sm btn-danger" onclick="deleteConfigPhone('${configPhone.phoneId}')" data-rel="tooltip">
+																<span> <i class="icon-trash bigger-120"></i>删除
+																</span>
+															</button>
+														</div>
+												</td>
+											</tr>
+										</#list>
+									</tbody>
+								</table>
+							</div>
+							<#include "/common/common_page.html">
+								<!-- /.table-responsive -->
+						</div>
+						<!-- /span -->
+					</div>
+					<!-- /row -->
+					<!-- PAGE CONTENT ENDS -->
+				</div>
+				<!-- /.col -->
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- ================新增、修改=================== -->
+		<div id="add-update-modal" class="modal fade" tabindex="-1" role="dialog">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 id="title" class="blue bigger"></h4>
+							</div>
+							<div class="modal-body overflow-visible">
+								<form class="form-inline" action="" id="add-update-form" method="post">
+									<div class="row">
+										<div class="col-xs-12">
+											<!-- PAGE CONTENT BEGINS -->
+											<div class="from-group">
+												<div class="input-group">
+													<input id="phoneId" style="display: none;" />
+													<div class="col-sm-11">
+														手机号: <input id="phone" type="text" name="configPhoneVo.phone"/>
+													</div>
+													<div id="phoneMessageType" class="col-sm-11">
+														<br />
+														类型:
+														
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+
+							<div class="modal-footer">
+								<button id="addUpdateSure" class="btn btn-sm btn-info" onclick="">
+								<i class="icon-ok"></i> 提交
+							</button>
+								<button class="btn btn-sm" data-dismiss="modal">
+								<i class="icon-remove"></i> 取消
+							</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				getSearchType();
+			});
+			function add() {
+				getPhoneMessageType();
+				$("#phone").val("");
+				$("input[name='type']").each(function() {
+					$(this).attr("checked", false);
+				});
+				$("#phone").attr("display", "none");
+				$('#title').html("新增记录");
+				$('#addUpdateSure').unbind("click");
+				$("#addUpdateSure").click(function(){
+					addSure();
+				});
+				$('#add-update-modal').modal('show');
+			}
+		
+			function addSure() {
+				var typeBox = document.getElementsByName("type");
+				var types = "";
+				for(var i=0; i<typeBox.length; i++){
+					if(typeBox[i].checked == true){
+						types += typeBox[i].value + ",";
+					}
+				}
+				$.ajax({
+					type: "post",
+					url: "${ctx}/config_phone/add",
+					async: true,
+					data: {
+						phone: $("#phone").val(),
+						types: types
+					},
+					success: function(data) {
+						data = $.parseJSON(data);
+						if(data.status == "1") {
+							alert("新增成功");
+							window.location.reload();
+						} else {
+							alert(data.errormsg);
+						}
+					}
+				});
+			}
+			function update(phoneId){
+				getPhoneMessageType();
+				document.getElementById("phone").disabled="disabled";
+				$('#addUpdateSure').unbind("click");
+				$("#addUpdateSure").click(function(){
+					updateSure();
+				});
+				$("#phoneId").val(phoneId)
+				$('#title').html("新增记录");
+				$.ajax({
+					type: "post",
+					url: "${ctx}/config_phone/get_config_phone",
+					async: false,
+					data: {
+						phoneId: phoneId
+					},
+					success: function(data) {
+						if(data.code == "1") {
+							$("#phone").val(data.data.vo.phone);
+							for(var i=0; i<data.data.vo.list.length; i++){
+								var types = document.getElementsByName("type");
+								for(var j=0; j<types.length; j++){
+									if(types[j].value == data.data.vo.list[i].typeId){
+										types[j].checked = true;
+									}
+								}
+							}
+						} else {
+							alert("获取信息失败");
+						}
+					}
+				});
+				$('#add-update-modal').modal('show');
+			}
+			function updateSure(){
+				var typeBox = document.getElementsByName("type");
+				var types = "";
+				for(var i=0; i<typeBox.length; i++){
+					if(typeBox[i].checked == true){
+						types += typeBox[i].value + ",";
+					}
+				}
+				$.ajax({
+					type: "post",
+					url: "${ctx}/config_phone/edit",
+					async: true,
+					data: {
+						phoneId: $("#phoneId").val(),
+						types: types
+					},
+					success: function(data) {
+						data = $.parseJSON(data);
+						if(data.status == "1") {
+							alert("修改成功");
+							window.location.reload();
+						} else {
+							alert("修改失败");
+						}
+					}
+				});
+			}
+		
+			function deleteConfigPhone(id) {
+				$.messager.confirm("删除电话号码", "确定要删除该电话号码吗！\n请确定是否删除！",
+					function() {
+						$.ajax({
+							type: "post",
+							url: "${ctx}/config_phone/delete",
+							async: true,
+							data: {
+								id: id
+							},
+							success: function(data) {
+								data = $.parseJSON(data);
+								if(data.status == "1") {
+									alert("操作成功");
+									window.location.reload();
+								} else {
+									alert("操作失败");
+								}
+							}
+						});
+					});
+			}
+			function getPhoneMessageType(){
+				$.ajax({
+					type: "get",
+					url: "${ctx}/config_phone/get_phone_message_type",
+					async: false,
+					success: function(data) {
+						if(data.code == "1") {
+							for(var i=0; i<data.data.list.length; i++){
+								var str = "<input name='type' type='checkbox' value='" + data.data.list[i].id + "'>" + data.data.list[i].type + "</input>";
+								$("#phoneMessageType").append(str);
+							}
+						} else {
+							alert("获取接收短信类型失败");
+						}
+					}
+				});
+			}
+			function getSearchType(){
+				$.ajax({
+					type: "get",
+					url: "${ctx}/config_phone/get_phone_message_type",
+					async: false,
+					success: function(data) {
+						if(data.code == "1") {
+							for(var i=0; i<data.data.list.length; i++){
+								var str = "<option value='" + data.data.list[i].id + "'>" + data.data.list[i].type + "</option>";
+								$("#typeSearch").append(str);
+							}
+							$("#typeSearch").val("${configPhoneVo.typeId}")
+						} else {
+							alert("获取接收短信类型失败");
+						}
+					}
+				});
+			}
+		</script>
+		<!-- /.page-content -->
+	</body>
+
+</html>

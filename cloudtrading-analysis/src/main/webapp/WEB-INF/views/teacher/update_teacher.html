@@ -1,0 +1,111 @@
+
+<input name="id" type="hidden" value="${teacherInfo.id}"/>
+
+<div class="from-group">
+	<label class="col-sm-4 control-label no-padding-right">工号：</label>
+	<div class="col-sm-7">
+		<input name="teacherNo" id="teacherNo" value="${teacherInfo.teacherNo}" style="width: 200px;" type="text" class="input-small" />
+	</div>
+</div>
+<div class="from-group">
+	<label class="col-sm-4 control-label no-padding-right">用户名：</label>
+	<div class="col-sm-7">
+		<input name="userName" id="userName" value="${teacherInfo.userName}" style="width: 200px;" type="text" class="input-small" />
+	</div>
+</div>
+<div class="from-group">
+	<label class="col-sm-4 control-label no-padding-right">真实姓名：</label>
+	<div class="col-sm-7">
+		<input name="realName" id="realName" value="${teacherInfo.realName}" style="width: 200px;" type="text" class="input-small" />
+	</div>
+</div>
+<div class="from-group">
+	<label class="col-sm-4 control-label no-padding-right">姓别*：</label>
+	<div class="col-sm-7">
+		<select name="sex" id="sex" class="input-no" style="width: 200px;">
+										<option value="1">男</option> 
+										<option value="2">女</option> 
+									</select>
+									<script>
+										$(function(){
+											$("#sex").val(${teacherInfo.sex});
+										})
+									</script>
+	</div>
+</div>
+<div class="from-group">
+	<label class="col-sm-4 control-label no-padding-right">手机号：</label>
+	<div class="col-sm-7">
+		<input name="phone" id="phone" disabled="disabled" value="${teacherInfo.phone}" style="width: 200px;" type="text" class="input-small" />
+	</div>
+</div>
+<div class="from-group">
+	<label class="col-sm-4 control-label no-padding-right">邮箱*：</label>
+	<div class="col-sm-7">
+		<input name="email" id="email" value="${teacherInfo.email}" style="width: 200px;" type="text" class="input-small" />
+	</div>
+</div>
+<div class="from-group">
+	<label class="col-sm-11 control-label no-padding-right"></label>
+	<label class="col-sm-3 control-label no-padding-right">班级头像*：</label>
+	<div class="col-sm-5">
+		<input class="input-file uniform_on" style="width: 200px;" id="class-file" type="file" />
+	</div>
+	<input type="hidden" id="class_image_url" name="class_image_url">
+</div>
+<div class="from-group">
+	<label class="col-sm-11 control-label no-padding-right"></label>
+	<label class="col-sm-3 control-label no-padding-right">社区头像*：</label>
+	<div class="col-sm-5">
+		<input class="input-file uniform_on" style="width: 200px;" id="community-file" type="file" />
+	</div>
+	<input type="hidden" id="community_image_url" name="community_image_url">
+</div>
+<script>
+	$(function() {
+		$('#class-file').uploadify({
+			'swf': '${ctx}/static/swf/uploadify.swf',
+			'uploader': '${ctx}/common/question_image',
+			'buttonText': '选择上传的班级头像',
+			'method': 'post',
+			'fileTypeExts': '*.jpg;*.png;*.gif;*.bmp;*.jpeg;',
+			'fileObjName': 'file',
+			'multi': true,
+			'onUploadSuccess': function(file, data, response) {
+				data = $.parseJSON(data);
+				if (data.status == 1) {
+					/* $('#add_service_area-imageUrlView').text(
+							data.data.image_uri);
+							alert(data.data.fileurl);
+							alert(data.data.fileuri);
+							*/
+					$('#class_image_url').val(data.data.image_url);
+				} else {
+					alert(data.errormsg);
+				}
+			},
+		});
+		$('#community-file').uploadify({
+			'swf': '${ctx}/static/swf/uploadify.swf',
+			'uploader': '${ctx}/common/question_image',
+			'buttonText': '选择上传的社区头像',
+			'method': 'post',
+			'fileTypeExts': '*.jpg;*.png;*.gif;*.bmp;*.jpeg;',
+			'fileObjName': 'file',
+			'multi': true,
+			'onUploadSuccess': function(file, data, response) {
+				data = $.parseJSON(data);
+				if (data.status == 1) {
+					/* $('#add_service_area-imageUrlView').text(
+							data.data.image_uri);
+							alert(data.data.fileurl);
+							alert(data.data.fileuri);
+							*/
+					$('#community_image_url').val(data.data.image_url);
+				} else {
+					alert(data.errormsg);
+				}
+			},
+		});
+	});
+</script>

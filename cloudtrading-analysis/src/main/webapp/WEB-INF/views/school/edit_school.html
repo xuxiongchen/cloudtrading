@@ -1,0 +1,160 @@
+
+<input type="hidden" name="id" value="${schoolInfoVo.id}">
+<div class="from-group">
+	<label class="col-sm-3 control-label no-padding-right">编号：</label>
+	<div class="col-sm-7">
+		<input name="schoolNo" value="${schoolInfoVo.schoolNo}" type="text"
+			class="input-no" />
+	</div>
+
+</div>
+<div class="space-4"></div>
+<div class="from-group">
+	<label class="col-sm-3 control-label no-padding-right">名称：</label>
+	<div class="col-sm-7">
+		<input name="schoolName" value="${schoolInfoVo.schoolName}" type="text"
+			class="input-no" />
+	</div>
+</div>
+<div class="space-4"></div>
+<label class="col-sm-3 control-label no-padding-right">省份：</label>
+<div class="col-sm-7">
+	<select name="provinceId" id="provinceIdEdit" style="width:200px;"
+		class="input-no">
+		<option value="0">---请选择---</option>
+	</select>
+</div>
+<div class="space-4"></div>
+<label class="col-sm-3 control-label no-padding-right">市区：</label>
+<div class="col-sm-7">
+	<select name="cityId" id="cityIdEdit" style="width:200px;" class="input-no">
+		<option value="0" >---请选择---</option>
+	</select>
+</div>
+<div class="space-4"></div>
+<label class="col-sm-3 control-label no-padding-right">地级市/镇区：</label>
+<div class="col-sm-7">
+	<select name="areaId" id="areaIdEdit" style="width:200px;" class="input-no">
+		<option value="0">---请选择---</option>
+	</select>
+</div>
+<div class="space-4"></div>
+<div class="from-group">
+	<label class="col-sm-3 control-label no-padding-right">邮政编码：</label>
+	<div class="col-sm-7">
+		<input name="postalCode" value="${schoolInfoVo.postalCode}" type="text"
+			class="input-no" />
+	</div>
+</div>
+<div class="space-4"></div>
+<script type="text/javascript">
+	$(function() {
+	getProvince();
+	provinceChange();
+	cityChange();	
+	function getProvince(){ 		
+		var href = "${ctx}/school/get_province_list";
+				$.ajax({
+					url: href,
+					async: false,
+					type: "GET",
+					data: {
+						sss: ""
+					},
+					success: function(data) {
+						data = $.parseJSON(data);
+						result = data.data.result;
+						var chapter = document.getElementById("provinceIdEdit");						
+						var chapteOption = "";
+						for (var i in result) {
+							if(${schoolInfoVo.provinceId} == result[i].provinceId) {
+								chapteOption += "<option value=" + result[i].provinceId + " selected >" + result[i].province + "</option>";
+							}else{
+								chapteOption += "<option value=" + result[i].provinceId + ">" + result[i].province + "</option>";
+							}		
+						}
+						chapter.innerHTML = chapteOption;
+						
+					}
+				});
+				
+
+	}
+	
+	 $("#provinceIdEdit").change(provinceChange);
+	 function provinceChange(){ 
+		var href = "${ctx}/school/get_city_list";
+		var provinceId = $("#provinceIdEdit option:selected").val(); 		
+		
+				 $.ajax({
+					url: href,
+					async: false,
+					type: "GET",
+					data: {
+						provinceId: provinceId
+					},
+					success: function(data) {
+						
+						data = $.parseJSON(data);
+						result = data.data.result;
+						
+						var chapter = document.getElementById("cityIdEdit");					
+						var chapteOption = "";
+						for (var i in result) {
+							if(${schoolInfoVo.cityId} == result[i].cityId) {
+								chapteOption += "<option value=" + result[i].cityId + " selected >" + result[i].city + "</option>";
+							}else{
+								chapteOption += "<option value=" + result[i].cityId + ">" + result[i].city + "</option>";
+							}	
+							
+						}
+						if(result.length == 0) {
+							chapter.innerHTML = "<option value=0>-----------------------</option>";
+						}else chapter.innerHTML = chapteOption;
+					}
+				}); 
+			cityChange();
+	}
+	
+	 $("#cityIdEdit").change(cityChange); 
+	function cityChange(){ 
+	
+		var href = "${ctx}/school/get_area_list";
+		var selected = $("#cityIdEdit option:selected");
+		var cityId = 0;		
+		//alert(selected.length)
+		if(selected.length>0)	cityId = selected.val(); 
+		
+				 $.ajax({
+					url: href,
+					async: false,
+					type: "GET",
+					data: {
+						cityId: cityId
+					},
+					success: function(data) {
+						
+						data = $.parseJSON(data);
+						result = data.data.result;
+						
+						var chapter = document.getElementById("areaIdEdit");					
+						var chapteOption = "";
+						for (var i in result) {
+							if(${schoolInfoVo.areaId} == result[i].areaId) {
+								chapteOption += "<option value=" + result[i].areaId + " selected >" + result[i].area + "</option>";
+							}else{
+								chapteOption += "<option value=" + result[i].areaId + ">" + result[i].area + "</option>";
+							}
+							
+						}
+						
+						if(result.length == 0) {
+							chapter.innerHTML = "<option value=0>-----------------------</option>";
+						}else chapter.innerHTML = chapteOption;
+					}
+				}); 
+	} 
+		
+	});
+
+</script>

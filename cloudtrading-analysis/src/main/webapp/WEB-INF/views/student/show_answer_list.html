@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="decorator" content="default" />
+<title>学生作业记录</title>
+</head>
+
+<body>
+
+	<div class="page-content">
+		<div class="page-header">
+			<h1>学生作业记录</h1>
+		</div>
+		<!-- /.page-header -->
+		<div class="row">
+			<div class="col-xs-12">
+				<!-- PAGE CONTENT BEGINS -->
+				<form class="form-inline" action="${ctx}/answer/search"
+					method="post">
+					<div class="row">
+						<div class="col-xs-12 col-sm-8">
+							<div class="input-group">
+								
+								<button type="submit" class="btn btn-purple btn-sm">
+									查询 <i class="icon-search icon-on-right bigger-110"></i>
+								</button>		
+							</div>
+						</div>
+					</div>
+				</form> 
+				<!--  -->
+				
+				<!--  -->	
+				<div id="add_homework-modal" class="modal fade" tabindex="-1"
+						role="dialog">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="blue bigger">新增作业</h4>
+								</div>
+								<div class="modal-body overflow-visible">
+									<form class="form-inline"
+										action="${ctx}/homework/add"
+										id="add_homework-form" method="post">
+										<div class="row">
+											<div class="col-xs-12">
+												<!-- PAGE CONTENT BEGINS -->
+												<div class="from-group">
+													<div class="input-group">
+														<label class="col-sm-3 control-label no-padding-right">编号：</label>
+														<div class="col-sm-7">
+															<input type="text" name="homeworkNo" class="col-xs-10 col-sm-5"
+																value="" required/>
+														</div>
+														<label class="col-sm-3 control-label no-padding-right">名称：</label>
+														<div class="col-sm-7">
+															<input type="text" name="homeworkName"
+																class="col-xs-10 col-sm-5" value="" />
+														</div>
+														<label class="col-sm-3 control-label no-padding-right">地址：</label>
+														<div class="col-sm-7">
+															<input type="text" name="address"
+																class="col-xs-10 col-sm-5" value="" />
+														</div>
+														<label class="col-sm-3 control-label no-padding-right">邮政编码：</label>
+														<div class="col-sm-7">
+															<input type="text" name="postalCode"
+																class="col-xs-10 col-sm-5" value="" />
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button class="btn btn-sm btn-info"
+										onclick="$('#add_homework-form').submit();">
+										<i class="icon-ok"></i> 提交
+									</button>
+									<button class="btn btn-sm" data-dismiss="modal">
+										<i class="icon-remove"></i> 取消
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>	
+				<!--  -->
+	
+				<!--  -->
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="table-responsive">
+							<table id="sample-table-1"
+								class="table table-striped table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>学生</th>	
+										<th>老师</th>		
+										<th>作业</th>		
+										<th>完成情况 </th>	
+										<th>学生定义题目难度</th>		
+										<th>学生提交时间</th>
+										<th>学生答案</th>
+										<th>批改</th>
+										<th>老师评语</th>
+										<th>最后一次打分</th>
+									</tr>
+								</thead>
+								<tbody>
+									<#list studentAnswerList as studentAnswer>
+									<tr>
+										
+										<td>${studentAnswer.stuRealName}</td>
+										<td>${studentAnswer.teaRealName}</td>
+										<td>${studentAnswer.question}</td>
+										<td>
+											<#if studentAnswer.finishStatus==0>未完成</#if>
+											<#if studentAnswer.finishStatus==1>完成</#if>
+											<#if studentAnswer.finishStatus==2>进行中</#if>
+										</td>
+										<td>${studentAnswer.levelRemark}</td>
+										<td>${studentAnswer.submitTime}</td>
+										<td>
+											<a href="${url_tag+studentAnswer.answerPhoto}" >
+												<img src="${url_tag+studentAnswer.answerPhoto}" width="60" height="60" ></img>
+											</a>
+										</td>
+										<td>
+											<#if studentAnswer.isCorrect==0>未批改</#if>
+											<#if studentAnswer.isCorrect==1>已批改</#if>
+										</td>
+										<td>${studentAnswer.remark}</td>
+										<td>
+											<#if studentAnswer.gradeLast==0>未批改</#if>
+											<#if studentAnswer.gradeLast==1>已批改</#if>
+										</td>
+										
+									</tr>
+									</#list>
+								</tbody>
+							</table>
+						</div>
+						<#include "/common/common_page.html">
+						<!-- /.table-responsive -->
+					</div>
+					<!-- /span -->
+				</div>
+				<!-- /row -->
+				<!-- PAGE CONTENT ENDS -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+	</div>
+	<!-- /.page-content -->
+
+	<a href="#" id="btn-scroll-up"
+		class="btn-scroll-up btn btn-sm btn-inverse"> <i
+		class="icon-double-angle-up icon-only bigger-110"></i>
+	</a>
+	<!--  -->
+	<div id="edit_homework-modal" class="modal fade" tabindex="-1" role="dialog" >
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="blue bigger">编辑作业</h4>
+				</div>
+
+				<div class="modal-body overflow-visible">
+					<form id="edit_homework-form" class="form-horizontal"
+						role="form" action="${ctx}/homework/ajax/edit" method="post"></form>
+				</div>
+
+				<div class="modal-footer">
+					<button class="btn btn-sm btn-info"
+						onclick="$('#edit_homework-form').submit();">
+						<i class="icon-ok"></i> 保存
+					</button>
+					<button class="btn btn-sm" data-dismiss="modal">
+						<i class="icon-remove"></i> 取消
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--  -->
+	<!-- inline scripts related to this page -->
+	<script type="text/javascript">
+	function deletehomework(id) {
+		$.messager.confirm("删除作业", "确定要删除该作业信息吗!", function() {
+			window.open("${ctx}/homework/delete?id=" + id,"_self");
+		});
+	}
+	function edithomework(id) {
+	$('#edit_homework-modal').modal('show');
+	$('#edit_homework-form').load(
+			"${ctx}/homework/edit?id=" + id,
+			function() {	
+			}
+		);
+    }
+	$(function() {
+			
+			$("#add_homework-form").validate();
+			$("#add_homework-form").bind(
+					'submit',
+					function() {
+						//校验表单
+						if (!$(this).valid()) {
+							return false;
+						}
+						ajaxSubmit(this, function(response) {
+							response = $.parseJSON(response);
+							if (response.status == 1) {
+								alert("添加成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						});
+						return false;
+					});
+			$("#edit_homework-form").validate();
+			$("#edit_homework-form").bind(
+					'submit',
+					function() {
+						//校验表单
+						if (!$(this).valid()) {
+							return false;
+						}
+						ajaxSubmit(this, function(response) {
+							response = $.parseJSON(response);
+							if (response.status == 1) {
+								alert("修改成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						});
+						return false;
+					});
+	});
+	</script>
+</body>
+</html>

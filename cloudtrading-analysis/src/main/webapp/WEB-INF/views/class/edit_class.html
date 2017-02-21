@@ -1,0 +1,53 @@
+										<input type="hidden" name="id" value="${classInfo.id}">
+<div class="from-group">
+										<label class="col-sm-3 control-label no-padding-right">年级：</label>
+										<div class="col-sm-7">
+								<input name="classGrade" value="${classInfo.classGrade}" 
+									type="text" class="input-small" />
+										</div>
+</div>
+<div class="space-4"></div>
+<div class="from-group">
+										<label class="col-sm-3 control-label no-padding-right">班级号：</label>
+										<div class="col-sm-7">
+							<input name="classNo" value="${classInfo.classNo}"
+									type="text" class="input-small" /> 
+										</div>
+
+</div>
+<div class="space-4"></div>
+
+<div class="from-group">
+
+<!-- 										<label class="col-sm-3 control-label no-padding-right">学校：</label>
+										<div class="col-sm-7">
+											<select name="schoolId" id="school_id" class="input-no">
+													<option value="${classInfo.schoolId}">${classInfo.schoolName}</option>
+											</select>
+										</div>	 -->
+</div>
+<div class="space-4"></div>
+
+	<script type="text/javascript">
+
+	
+/* 		$(function() {
+				var href="${ctx}/school/get_school_list";
+				$.ajax({
+		    	  url:href,
+		    	  async: false,
+		          type: "POST",
+		          data:{sss:""},
+		    	  success:function(data,status) {
+		    	  				data = $.parseJSON(data);
+								var chapter = document.getElementById("school_id");
+								var chapteOption = "";
+								for(var i in data.result){
+									chapteOption += "<option value="+data.result[i].school_id+">"+data.result[i].school_name+"</option>";
+								}
+								chapter.innerHTML = chapteOption;
+		    	 			 } 
+					 });
+	
+	}); */
+	</script>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/p
+	http://www.springframework.org/schema/tx/spring-p.xsd
+	http://www.springframework.org/schema/cache
+	http://www.springframework.org/schema/cache/spring-cache.xsd
+	http://www.springframework.org/schema/task
+	http://www.springframework.org/schema/task/spring-task.xsd ">
+
+	<description>Spring公共配置 </description>
+
+	<!-- 定义 aop Aspect自动代理 -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+
+	<!-- 使用 annotation 自动注册 bean,并保证 @Required, @Autowired 的属性被注入 -->
+	<context:component-scan base-package="com.cloudtrading">
+		<context:include-filter type="annotation"
+			expression="org.aspectj.lang.annotation.Aspect" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<bean id="orikaBeanMapper" class="com.huisa.common.beans.mapping.orika.OrikaBeanMapper" >
+		<property name="basePackage" value="com.cloudtrading.**" />
+	</bean>
+<!-- 	<bean id="test" > </bean> -->
+	
+	 <task:scheduler id="scheduler" pool-size="1" />
+	 <task:scheduled-tasks scheduler="scheduler" >  
+        <task:scheduled ref="catchDataScheduledService" method="startWork"  
+            cron="50 59 8 ? * MON-FRI" />  
+     </task:scheduled-tasks> 
+
+
+	 <task:scheduler id="stopscheduler" pool-size="1" />
+	 <task:scheduled-tasks scheduler="stopscheduler" >  
+        <task:scheduled ref="catchDataScheduledService" method="stopWork"  
+            cron="45 29 4 ? * MON-FRI" />  
+     </task:scheduled-tasks>
+  
+     
+	 <task:scheduler id="resetscheduler" pool-size="1" />
+	 <task:scheduled-tasks scheduler="resetscheduler" >  
+        <task:scheduled ref="catchDataService" method="resetCCWindow"  
+            cron="0 0,30 * * * MON-FRI" />  
+     </task:scheduled-tasks>
+     
+<!--      <task:scheduler id="startOrStopscheduler" pool-size="1" />
+	 <task:scheduled-tasks scheduler="startOrStopscheduler" >  
+        <task:scheduled ref="catchDataService" method="startOrStopCreateRealGoldCoper"  
+            cron="0 0 13,15,21 * * MON-FRI" />  
+     </task:scheduled-tasks> -->
+     
+<!-- 	<beans profile="production">
+		<context:property-placeholder
+			ignore-resource-not-found="true" location="classpath*:/application.properties" />
+	</beans>
+
+	<beans profile="development">
+		<context:property-placeholder
+			ignore-resource-not-found="true" location="classpath*:/application.dev.properties" />
+	</beans> -->
+</beans>

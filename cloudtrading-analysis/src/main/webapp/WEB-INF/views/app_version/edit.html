@@ -1,0 +1,66 @@
+<input type="hidden" name="id" value="${appVersion.id}">
+<!-- <div class="form-group">
+	<label class="col-sm-3 control-label no-padding-right"> 系统类型</label>
+	<div class="col-sm-7">
+		<select name="appType" class="col-sm-10" id="edit_app_version-Type">
+			<option value="0">请选择app类型</option>
+			<option value="1"<#if appVersion.appType==1>
+				selected="selected"</#if>>导购端</option>
+			<option value="2"<#if appVersion.appType==2>
+				selected="selected"</#if>>用户端</option>
+		</select>
+	</div>
+</div>
+<div class="space-4"></div> -->
+
+<div class="form-group">
+	<label class="col-sm-3 control-label no-padding-right"> 系统类型</label>
+	<div class="col-sm-7">
+		<select name="sysType" class="col-sm-10" id="edit_app_version-sysType">
+			<option value="0">请选择系统类型</option>
+			<option value="1"<#if appVersion.sysType==1>
+				selected="selected"</#if>>ios</option>
+			<option value="2"<#if appVersion.sysType==2>
+				selected="selected"</#if>>android</option>
+		</select>
+	</div>
+</div>
+<div class="space-4"></div>
+
+<div class="form-group"
+	<#if appVersion.sysType!=2> style="display: none" </#if>
+	id="edit_app_version-apkUpload"> <label class="col-sm-3 control-label no-padding-right">上传apk包</label>
+	<div class="col-sm-7">
+		<input class="input-file uniform_on" id="edit_app_version-apkfile"
+			type="file"> <span id="edit_app_version-apkUrlView">${appVersion.apkUrl}</span>
+	</div>
+</div>
+<input type="hidden" id="edit_app_version-apkUrl" name="apkUrl"
+	value="${appVersion.apkUrl}">
+
+<div class="form-group">
+	<label class="col-sm-3 control-label no-padding-right"
+		for="versionName"> 版本名称 </label>
+	<div class="col-sm-7">
+		<input type="text" name="versionName" class="col-xs-10 col-sm-5"
+			value="${appVersion.versionName}" required />
+	</div>
+</div>
+<div class="space-4"></div>
+
+<div class="form-group">
+	<label class="col-sm-3 control-label no-padding-right"
+		for="versionCode"> 版本code </label>
+	<div class="col-sm-7">
+		<input type="number" name="versionCode" class="col-xs-10 col-sm-5"
+			value="${appVersion.versionCode}" required number="true" min="1" />
+	</div>
+</div>
+<div class="space-4"></div>
+
+<div class="form-group">
+	<label class="col-sm-3 control-label no-padding-right">更新内容</label>
+	<div class="col-sm-7">
+		<textarea class="updateLog" name="updateLog" rows="2" required>${appVersion.updateLog}</textarea>
+	</div>
+</div>

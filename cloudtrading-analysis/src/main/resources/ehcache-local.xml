@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache updateCheck="false" name="defaultCache">
+
+	<!-- <diskStore path="../temp/rising-payment/ehcache" /> -->
+<!-- 	<diskStore path="java.io.tmpdir/shiro-ehcache" /> -->
+
+	<!-- 默认缓存配置. -->
+	<defaultCache maxEntriesLocalHeap="2000" eternal="false"
+		timeToIdleSeconds="7200" timeToLiveSeconds="7200" overflowToDisk="true"
+		maxEntriesLocalDisk="10000" diskPersistent="true"
+		diskExpiryThreadIntervalSeconds="300" />
+
+
+	<!-- 系统活动会话缓存 <cache name="shiro-activeSessionCache" maxEntriesLocalHeap="10000" 
+		overflowToDisk="true" eternal="true" timeToLiveSeconds="0" timeToIdleSeconds="0" 
+		diskPersistent="true" diskExpiryThreadIntervalSeconds="600"/> -->
+
+	<!-- 简单页面缓存 <cache name="SimplePageCachingFilter" maxEntriesLocalHeap="100" 
+		eternal="false" overflowToDisk="true" timeToIdleSeconds="120" timeToLiveSeconds="120" 
+		memoryStoreEvictionPolicy="LFU"/> -->
+
+</ehcache>

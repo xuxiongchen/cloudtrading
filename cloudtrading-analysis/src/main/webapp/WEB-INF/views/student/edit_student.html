@@ -1,0 +1,146 @@
+<div class="row">
+	<div class="col-xs-12">
+		<div class="from-group">
+			<div class="input-group">
+
+				<input type="hidden" name="id" value="${StudentInfo.id}">
+				<input type="hidden" name="class_id" value="${StudentInfo.class_id}">
+
+				<label class="col-sm-4 control-label no-padding-right">学号：</label>
+				<div class="col-sm-7">
+					<input name="studentNo" value="${StudentInfo.studentNo}" style="width:200px;" type="text" class="input-small" />
+				</div>
+				<label class="col-sm-4 control-label no-padding-right">真实姓名：</label>
+				<div class="col-sm-7">
+					<input name="realName" value="${StudentInfo.realName}" style="width:200px;" type="text" class="input-small" />
+				</div>
+				<label class="col-sm-4 control-label no-padding-right">性别：</label>
+				<div class="col-sm-7">
+					<select id="edit_sex" name="sex" class="input-no" style="width:200px;">
+																<option value="1">男</option>
+																<option value="2">女</option>
+															</select>
+				</div>
+				<label class="col-sm-4 control-label no-padding-right">学校：</label>
+				<div class="col-sm-7">
+					<select name="schoolId" id="edit_school_id" style="width:200px;" class="input-no">
+					</select>
+				</div>
+				<label class="col-sm-4 control-label no-padding-right">入学日期：</label>
+				<div class="col-sm-7">
+					<input id="stu_edit_enroll_date" name="enroll_date" value="" style="width:200px;" type="date" />
+				</div>
+				<label class="col-sm-4 control-label no-padding-right">年级：</label>
+				<div class="col-sm-7">
+					<input name="classGrade" value="${StudentInfo.classGrade}" style="width:200px;" type="text" class="input-small" />
+				</div>
+				<label class="col-sm-4 control-label no-padding-right">班号：</label>
+				<div class="col-sm-7">
+					<input name="classNo" value="${StudentInfo.classNo}" style="width:200px;" type="text" class="input-small" />
+				</div>
+				<label class="col-sm-4 control-label no-padding-right">学生班内编号：</label>
+				<div class="col-sm-7">
+					<input name="studentClassNo" value="${StudentInfo.studentClassNo}" style="width:200px;" type="text" class="input-small" />
+				</div>
+				<label class="col-sm-4 control-label no-padding-right">社区昵称：</label>
+				<div class="col-sm-7">
+					<input name="userName" value="${StudentInfo.userName}" style="width:200px;" type="text" class="input-small" />
+				</div>
+				<label class="col-sm-4 control-label no-padding-right">电话：</label>
+				<div class="col-sm-7">
+					<input name="phone" value="${StudentInfo.phone}" style="width:200px;" type="text" class="input-small" />
+				</div>
+				<label class="col-sm-4 control-label no-padding-right">邮箱：</label>
+				<div class="col-sm-7">
+					<input name="email" value="${StudentInfo.email}" style="width:200px;" type="text" class="input-small" />
+				</div>
+
+				<div class="from-group">
+					<label class="col-sm-11 control-label no-padding-right"></label>
+					<label class="col-sm-3 control-label no-padding-right" style="margin-left: 47px;">班级头像*：</label>
+					<div class="col-sm-5">
+						<input class="input-file uniform_on" style="width: 200px;" id="edit_class_image-file" type="file" />
+					</div>
+					<input type="hidden" id="edit_class_image-fileUrl" name="classPortraitPhoto">
+				</div>
+				<div class="from-group">
+					<label class="col-sm-11 control-label no-padding-right"></label>
+					<label class="col-sm-4 control-label no-padding-right">社区头像：</label>
+					<div class="col-sm-7">
+						<input class="input-file uniform_on" style="width: 200px;" id="edit_community_image-file" type="file" />
+					</div>
+					<input type="hidden" id="edit_community_image-fileUrl" name="communityPortraitPhoto">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$(function() {
+		getSchoolList();
+		$("#edit_sex").val(${StudentInfo.sex});
+		$("#stu_edit_enroll_date").val('${StudentInfo.enrollDate}'.substring(0,10));
+	});
+
+	function getSchoolList() {
+		var href = "${ctx}/school/get_school_list";
+		$.ajax({
+			url: href,
+			async: false,
+			type: "POST",
+			data: {
+				sss: ""
+			},
+			success: function(data, status) {
+				data = $.parseJSON(data);
+				var chapter = document.getElementById("edit_school_id");
+				var chapteOption = "";
+				for (var i in data.result) {
+					if ("${StudentInfo.schoolName}" == data.result[i].school_name) {
+						chapteOption += "<option selected='selected' value=" + data.result[i].school_id + ">" + data.result[i].school_name + "</option>";
+					} else {
+						chapteOption += "<option value=" + data.result[i].school_id + ">" + data.result[i].school_name + "</option>";
+					}
+				}
+				chapter.innerHTML = chapteOption;
+			}
+		});
+		$('#add_teacher-modal').modal('show');
+	}
+	jQuery(function($) {
+		$('#edit_class_image-file').uploadify({
+			'swf': '${ctx}/static/swf/uploadify.swf',
+			'uploader': '${ctx}/common/question_image',
+			'buttonText': '选择上传的学生头像',
+			'method': 'post',
+			'fileTypeExts': '*.jpg;*.png;*.gif;*.bmp;*.jpeg;',
+			'fileObjName': 'file',
+			'multi': true,
+			'onUploadSuccess': function(file, data, response) {
+				data = $.parseJSON(data);
+				if (data.status == 1) {
+					$("#edit_class_image-fileUrl").val(data.data.image_url);
+				} else {
+					alert(data.errormsg);
+				}
+			},
+		});
+		$('#edit_community_image-file').uploadify({
+			'swf': '${ctx}/static/swf/uploadify.swf',
+			'uploader': '${ctx}/common/question_image',
+			'buttonText': '选择上传的学生头像',
+			'method': 'post',
+			'fileTypeExts': '*.jpg;*.png;*.gif;*.bmp;*.jpeg;',
+			'fileObjName': 'file',
+			'multi': true,
+			'onUploadSuccess': function(file, data, response) {
+				data = $.parseJSON(data);
+				if (data.status == 1) {
+					$("#edit_community_image-fileUrl").val(data.data.image_url);
+				} else {
+					alert(data.errormsg);
+				}
+			},
+		});
+	});
+</script>

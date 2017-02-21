@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta name="decorator" content="default" />
+		<title>班级信息管理</title>
+	</head>
+
+	<body>
+
+		<div class="page-content">
+			<div class="page-header">
+				<h1>班级信息管理</h1>
+			</div>
+			<!-- /.page-header -->
+			<div class="row">
+				<div class="col-xs-12">
+					<!-- PAGE CONTENT BEGINS -->
+					<form class="form-inline" action="${ctx}/class/search" method="post">
+						<div class="row">
+							<div class="col-xs-12 col-sm-8">
+								<div class="input-group">
+									年级：<input name="classGrade" value="${classInfo.classGrade}" type="text" class="input-small" /> 班级号：
+									<input name="classNo" value="${classInfo.classNo}" type="text" class="input-small" /> 学校编号：
+									<input name="schoolNo" value="${classInfo.schoolNo}" type="text" class="input-small" /> 学校名称：
+									<input name="schoolName" value="${classInfo.schoolName}" type="text" class="input-small" /> &nbsp;
+									<button type="submit" class="btn btn-purple btn-sm">
+									查询 <i class="icon-search icon-on-right bigger-110"></i>
+								</button>
+									<br>
+									<!-- 								目前在任老师工号：<input name="postalCode" value="${classInfo.teacherNo}" 
+									type="text" class="input-small" />
+								姓名：<input name="postalCode" value="${classInfo.teacherRealName}" 
+									type="text" class="input-small" /> -->
+									<button class="btn btn-sm btn-purple" data-toggle="modal" data-target="#add_class-modal">
+									<i class="icon-edit bigger-120"></i>增加新班级
+								</button>
+
+								</div>
+							</div>
+						</div>
+					</form>
+
+					<div id="add_class-modal" class="modal fade" tabindex="-1" role="dialog">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="blue bigger">新增班级</h4>
+								</div>
+								<div class="modal-body overflow-visible">
+									<form class="form-inline" action="${ctx}/class/add" id="add_class-form" method="post">
+										<div class="row">
+											<div class="col-xs-12">
+												<!-- PAGE CONTENT BEGINS -->
+												<div class="from-group">
+													<div class="input-group">
+														<label class="col-sm-3 control-label no-padding-right">年级：</label>
+														<div class="col-sm-7">
+															<input name="classGrade" value="${classInfo.classGrade}" type="text" class="input-small" />
+														</div>
+														<label class="col-sm-3 control-label no-padding-right">班级号：</label>
+														<div class="col-sm-7">
+															<input name="classNo" value="${classInfo.classNo}" type="text" class="input-small" />
+														</div>
+														<label class="col-sm-3 control-label no-padding-right">学校：</label>
+														<div class="col-sm-7">
+															<select name="schoolId" id="add_school_id" class="input-no">
+													<option value="${classInfo.schoolId}">${classInfo.schoolName}</option>
+											</select>
+														</div>
+														<br>
+														<!-- 								<label class="col-sm-3 control-label no-padding-right">目前在任老师工号：</label>
+										<div class="col-sm-7">
+								<input name="postalCode" value="${classInfo.teacherNo}" 
+									type="text" class="input-small" />
+										</div> -->
+
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button class="btn btn-sm btn-info" onclick="$('#add_class-form').submit();">
+						<i class="icon-ok"></i> 提交
+					</button>
+									<button class="btn btn-sm" data-dismiss="modal">
+						<i class="icon-remove"></i> 取消
+					</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="table-responsive">
+								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+									<thead>
+										<tr>
+											<!-- <th class="center"><label> <input type="checkbox"
+												class="ace" /> <span class="lbl"></span>
+										</label></th> -->
+											<th>班级序号</th>
+											<th>学校编号</th>
+											<th>学校名称</th>
+											<th>年级</th>
+											<th>班级号</th>
+											<th></th>
+											<th></th>
+											<th></th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<#list classInfoList as classInfo2>
+											<tr>
+												<!-- <td class="center"><label> <input type="checkbox"
+												class="ace" /> <span class="lbl"></span>
+										</label></td> -->
+												<td>${classInfo2.id}</td>
+												<td>${classInfo2.schoolNo}</td>
+												<td>${classInfo2.schoolName}</td>
+												<td>${classInfo2.classGrade}</td>
+												<td>${classInfo2.classNo}</td>
+												<td>
+													<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+														<button class="btn btn-sm btn-purple" onclick="editclass('${classInfo2.id}')" data-rel="tooltip">
+													<span> <i class="icon-edit bigger-120"></i>编辑
+													</span>
+												</button>
+													</div>
+												</td>
+												<td>
+													<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+														<button class="btn btn-sm btn-purple" onclick="importStudent('${classInfo2.id}','${classInfo2.schoolId}')" data-rel="tooltip">
+													<span> <i class="icon-edit bigger-120"></i>导入学生
+													</span>
+												</button>
+													</div>
+												</td>
+												<td>
+													<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+														<button class="btn btn-sm btn-purple" onclick="importStudentImage('${classInfo2.id}')" data-rel="tooltip">
+													<span> <i class="icon-edit bigger-120"></i>导入学生头像
+													</span>
+												</button>
+													</div>
+												</td>
+
+												<td>
+													<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+														<button class="btn btn-sm btn-danger" onclick="deleteclass('${classInfo2.id}')" data-rel="tooltip">
+													<span> <i class="icon-trash bigger-120"></i>删除
+													</span>
+												</button>
+													</div>
+												</td>
+											</tr>
+										</#list>
+									</tbody>
+								</table>
+							</div>
+							<#include "/common/common_page.html">
+								<!-- /.table-responsive -->
+						</div>
+						<!-- /span -->
+					</div>
+					<!-- /row -->
+					<!-- PAGE CONTENT ENDS -->
+				</div>
+				<!-- /.col -->
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /.page-content -->
+
+		<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse"> <i class="icon-double-angle-up icon-only bigger-110"></i>
+		</a>
+		<div id="edit_class-modal" class="modal fade" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="blue bigger">编辑班级</h4>
+					</div>
+
+					<div class="modal-body overflow-visible">
+						<form id="edit_class-form" class="form-horizontal" role="form" action="${ctx}/class/ajax/edit" method="post"></form>
+					</div>
+
+					<div class="modal-footer">
+						<button class="btn btn-sm btn-info" onclick="$('#edit_class-form').submit();">
+						<i class="icon-ok"></i> 保存
+					</button>
+						<button class="btn btn-sm" data-dismiss="modal">
+						<i class="icon-remove"></i> 取消
+					</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="import_student-modal" class="modal fade" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="blue bigger">按班级导入学生</h4>
+					</div>
+
+					<div class="modal-body overflow-visible">
+						<form id="import_student-form" class="form-inline" role="form" action="${ctx}/student/import" method="post">
+							<label class="col-sm-5 control-label no-padding-right">入学日期：</label>
+							<div class="col-sm-7">
+								<input name="enroll_date" value="2015-09-01" type="date" style="width:163px" />
+							</div>
+							<div class="form-group" id="class-upload">
+
+								<label class="col-sm-5 control-label no-padding-right">导入学生:</label>
+								<div class="col-sm-7">
+									<input class="input-file uniform_on" id="student-file" type="file" />
+								</div>
+							</div>
+							<input type="hidden" id="student-fileUrl" name="student_import_url">
+							<input type="hidden" id="student_class-id" name="student_class_id">
+							<input type="hidden" id="student_school-id" name="student_school_id">
+						</form>
+					</div>
+
+					<div class="modal-footer">
+						<div class="btn btn-sm">
+							<a class="btn btn-sm btn-primary" id="btn-download" href="${ctx}/static/down/student.xls">下载模板</a>
+						</div>
+
+						<button class="btn btn-sm btn-info" onclick="$('#import_student-form').submit();">
+						<i class="icon-ok"></i> 上传
+					</button>
+						<button class="btn btn-sm" data-dismiss="modal">
+						<i class="icon-remove"></i> 取消
+					</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="import_student_image-modal" class="modal fade" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="blue bigger">按学号导入学生头像</h4>
+					</div>
+
+					<div class="modal-body overflow-visible">
+						<form id="import_student_image-form" class="form-inline" role="form" action="" method="post">
+							<div class="form-group" id="class-upload">
+
+								<label>批量导入学生头像,注意文件名要符合要求,以学号为文件名,支持*.jpg、*.png、*.gif、*.bmp、*.jpeg格式</label><br />
+								<div class="col-sm-7">
+									<input class="input-file uniform_on" id="student_image-file" type="file" />
+									<input type="hidden" id="student_image_class_id" name="student_image_class_id">
+								</div>
+							</div>
+						</form>
+					</div>
+
+					<div class="modal-footer">
+						<button class="btn btn-sm btn-info" onclick="sureImportStudentImage();">
+						<i class="icon-ok"></i> 上传
+					</button>
+						<button class="btn btn-sm" data-dismiss="modal">
+						<i class="icon-remove"></i> 取消
+					</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- inline scripts related to this page -->
+		<script type="text/javascript">
+			function deleteclass(id) {
+				$.messager.confirm("删除班级", "确定要删除该班级信息吗!", function() {
+					window.open("${ctx}/class/delete?id=" + id, "_self");
+				});
+			}
+
+			function editclass(id) {
+				$('#edit_class-modal').modal('show');
+				$('#edit_class-form').load(
+					"${ctx}/class/edit?id=" + id,
+					function() {}
+				);
+			}
+
+			function importStudent(id, schoolId) {
+				$('#import_student-modal').modal('show');
+				$('#student_class-id').val(id);
+				$('#student_school-id').val(schoolId);
+			}
+			//上传班级头像
+			function importStudentImage(id) {
+				$('#import_student_image-modal').modal('show');
+				if ($("#student_image_class_id").val() != id) {
+					classImgs.length = 0;
+					$('#student_image_class_id').val(id);
+				}
+			}
+			//确定导入学生头像
+			function sureImportStudentImage() {
+				if (classImgs.length > 0) {
+					$.ajax({
+						type: "post",
+						url: "${ctx}/class/importClassStuImages",
+						async: true,
+						data: {
+							student_image_class_id: $("#student_image_class_id").val(),
+							class_import_url: classImgs.toString()
+						},
+						success: function(response) {
+							response = $.parseJSON(response);
+							if (response.status == 1) {
+								alert("导入成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						}
+					});
+				} else {
+					alert("请先选择上传头像");
+				}
+				return false;
+			}
+			$(function() {
+				var href = "${ctx}/school/get_school_list";
+				$.ajax({
+					url: href,
+					async: false,
+					type: "POST",
+					data: {
+						sss: ""
+					},
+					success: function(data, status) {
+						data = $.parseJSON(data);
+						var schoolId = document.getElementById("add_school_id");
+						var schoolIdOption = "";
+						for (var i in data.result) {
+							schoolIdOption += "<option value=" + data.result[i].school_id + ">" + data.result[i].school_name + "</option>";
+						}
+						schoolId.innerHTML = schoolIdOption;
+					}
+				});
+				$('#student-file').uploadify({
+					'swf': '${ctx}/static/swf/uploadify.swf',
+					'uploader': '${ctx}/common/excelupload',
+					'buttonText': '选择要上传的EXCEL',
+					'method': 'post',
+					'fileTypeExts': '*.xls;*.xlsx;',
+					'fileObjName': 'file',
+					'multi': true,
+					'onUploadSuccess': function(file, data, response) {
+						data = $.parseJSON(data);
+						if (data.status == 1) {
+							/* $('#add_service_area-imageUrlView').text(
+									data.data.image_uri);
+									alert(data.data.fileurl);
+									alert(data.data.fileuri);
+									*/
+							$('#student-fileUrl').val(
+								data.data.fileurl);
+						} else {
+							alert(data.errormsg);
+						}
+					},
+				});
+				$("#import_student-form").validate();
+				$("#import_student-form").bind(
+					'submit',
+					function() {
+						//校验表单
+						if (!$(this).valid()) {
+							return false;
+						}
+						ajaxSubmit(this, function(response) {
+							response = $.parseJSON(response);
+							if (response.status == 1) {
+								alert("导入成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						});
+						return false;
+					});
+				$("#import_class-form").validate();
+				$("#import_class-form").bind(
+					'submit',
+					function() {
+						//校验表单
+						if (!$(this).valid()) {
+							return false;
+						}
+						ajaxSubmit(this, function(response) {
+							response = $.parseJSON(response);
+							if (response.status == 1) {
+								alert("导入成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						});
+						return false;
+					});
+				$("#add_class-form").validate();
+				$("#add_class-form").bind(
+					'submit',
+					function() {
+						//校验表单
+						if (!$(this).valid()) {
+							return false;
+						}
+						ajaxSubmit(this, function(response) {
+							response = $.parseJSON(response);
+							if (response.status == 1) {
+								alert("添加成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						});
+						return false;
+					});
+				$("#edit_class-form").validate();
+				$("#edit_class-form").bind(
+					'submit',
+					function() {
+						//校验表单
+						if (!$(this).valid()) {
+							return false;
+						}
+						ajaxSubmit(this, function(response) {
+							response = $.parseJSON(response);
+							if (response.status == 1) {
+								alert("修改成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						});
+						return false;
+					});
+			});
+			var classImgs = new Array();
+			jQuery(function($) {
+				$('#id-input-file').ace_file_input({
+					style: 'well',
+					btn_choose: '拖拽文件到此处或者点击选择文件(支持批量导入)',
+					btn_change: null,
+					no_icon: 'icon-cloud-upload',
+					droppable: true,
+					thumbnail: 'small' //large | fit
+						//,icon_remove:null//set null, to hide remove/reset button
+						/**,before_change:function(files, dropped) {
+						  //Check an example below
+						  //or examples/file-upload.html
+						  return true;
+						}*/
+						/**,before_remove : function() {
+						  return true;
+						}*/
+						,
+					preview_error: function(filename, error_code) {
+						//name of the file that failed
+						//error_code values
+						//1 = 'FILE_LOAD_FAILED',
+						//2 = 'IMAGE_LOAD_FAILED',
+						//3 = 'THUMBNAIL_FAILED'
+						//alert(error_code);
+					}
+				}).on('change', function() {
+					$('#btn-upload').removeClass('disabled').addClass('btn-primary');
+				});
+				$('#student_image-file').uploadify({
+					'swf': '${ctx}/static/swf/uploadify.swf',
+					'uploader': '${ctx}/common/question_image',
+					'buttonText': '选择上传的学生头像',
+					'method': 'post',
+					'fileTypeExts': '*.jpg;*.png;*.gif;*.bmp;*.jpeg;',
+					'fileObjName': 'file',
+					'multi': true,
+					'onUploadSuccess': function(file, data, response) {
+						data = $.parseJSON(data);
+						if (data.status == 1) {
+							classImgs.push(data.data.image_url);
+						} else {
+							alert(data.errormsg);
+						}
+					},
+				});
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<jmxConfigurator />
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%X{user_id} %X{req.requestURI} %d [%t] %-5p [%c:%L] - %m%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	    <file>logs/cloudtrading-analysis.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/cloudtrading-analysis-%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>15</maxHistory> 
+		</rollingPolicy>
+		<encoder>
+			<pattern>%X{user_id} %X{req.requestURI} %d [%t] %-5p [%c:%L] - %m%n</pattern>
+		</encoder>
+		<append>true</append>  
+   		<prudent>false</prudent>  
+       <!--  <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy" /> -->
+	</appender>
+
+	<root level="INFO">
+		<appender-ref ref="console" />
+		<appender-ref ref="rollingFile" />
+	</root>
+</configuration>

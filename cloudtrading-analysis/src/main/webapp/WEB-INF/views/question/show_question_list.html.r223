@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="decorator" content="default" />
+<title>题库信息管理</title>
+</head>
+
+<body>
+
+	<div class="page-content">
+		<div class="page-header">
+			<h1>题库信息管理</h1>
+		</div>
+		<!-- /.page-header -->
+		<div class="row">
+			<div class="col-xs-12">
+				<!-- PAGE CONTENT BEGINS -->
+				<form class="form-inline" action="${ctx}/question/search"
+					method="post">
+					<div class="row">
+						<div class="col-xs-12 col-sm-8">
+							<div class="input-group">
+								问题描述：<input name="question" value="${questionInfo.question}"
+									type="text" class="input-small" /> 
+								书本：<input name="bookName" value="${questionInfo.bookName}" 
+									type="text" class="input-small" />
+								章：<input name="chapter" value="${questionInfo.chapter}" 
+									type="text" class="input-small" />
+								节：<input name="section" value="${questionInfo.section}" 
+									type="text" class="input-small" />
+								知识点：<input name="knowledge" value="${questionInfo.knowledge}" 
+									type="text" class="input-small" />
+								&nbsp;
+								<button type="submit" class="btn btn-purple btn-sm">
+									查询 <i class="icon-search icon-on-right bigger-110"></i>
+								</button>	
+								<button class="btn btn-sm btn-purple" data-toggle="modal"
+									 onclick="addQuestionLoad();">
+									<i class="icon-edit bigger-120"></i>添加题目
+								</button>
+
+							</div>
+						</div>
+					</div>
+				</form> 
+	
+				
+	
+	<div id="add_question-modal" class="modal fade" tabindex="-1"
+		role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="blue bigger">新增题库</h4>
+				</div>
+				<div class="modal-body overflow-visible">
+					<form class="form-horizontal"
+						action="${ctx}/question/add" role="form"
+						id="add_question-form" method="post">
+
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-sm btn-info" id="add_question"
+						onclick="addQuestion();">
+						<i class="icon-ok"></i> 提交
+					</button>
+					<button class="btn btn-sm" data-dismiss="modal">
+						<i class="icon-remove"></i> 取消
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>	
+	
+<div id="publish_homework-modal" class="modal fade" tabindex="-1"
+		role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="blue bigger">发布为作业</h4>
+				</div>
+				<div class="modal-body overflow-visible">
+					<form class="form-inline"
+						action="${ctx}/homework/publish"
+						id="publish_homework-form" method="post">
+						<div class="row">
+							<div class="col-xs-12">
+								<!-- PAGE CONTENT BEGINS -->
+								<div class="from-group">
+									<div class="input-group">
+										<input name="question_id" value="" id="publish_question_id"
+											type="hidden" class="input-small" />
+									
+										<label class="col-sm-4 control-label no-padding-right">班级:</label>
+										<div class="col-sm-7">
+											<select name="class_id" id="grade_no" class="input-no">
+											</select>
+										</div>	
+										<label class="col-sm-4 control-label no-padding-right">发布时间:</label>
+										<div class="col-sm-7">
+											<input size="16" type="date" name="publish_date" >
+										</div>	
+										<label class="col-sm-4 control-label no-padding-right">截止时间:</label>
+										<div class="col-sm-7">
+											<input name="expiration_date" size="16"
+											type="date"  />
+										</div>	
+
+												
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				
+				<div class="modal-footer">
+					<button class="btn btn-sm btn-info"
+						onclick="$('#publish_homework-form').submit();">
+						<i class="icon-ok"></i> 提交
+					</button>
+					<button class="btn btn-sm" data-dismiss="modal">
+						<i class="icon-remove"></i> 取消
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>	
+	
+	
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="table-responsive">
+							<table id="sample-table-1"
+								class="table table-striped table-bordered table-hover">
+								<thead>
+									<tr>
+										<!-- <th class="center"><label> <input type="checkbox"
+												class="ace" /> <span class="lbl"></span>
+										</label></th> -->
+										<th>编号</th>
+										<th>问题描述</th>
+										<th>问题图片</th>
+										<th>标签</th>
+										<th>提示</th>
+										<th>标准答案</th>
+										<th>来自老师</th>										
+										<th>来自书本</th>
+										<th>章</th>
+										<th>节</th>
+										<th>知识点</th>
+										<th>发布作业</th>	
+										<th></th>								
+									</tr>
+								</thead>
+								<tbody>
+									<#list questionInfoList as questionInfo>
+									<tr>
+										<!-- <td class="center"><label> <input type="checkbox"
+												class="ace" /> <span class="lbl"></span>
+										</label></td> -->
+										 <td>${questionInfo.id}</td> 
+										<td>${questionInfo.question}</td>
+										<td>
+											<a href="${url_tag+questionInfo.questionPhoto}">
+											<img src="${url_tag+questionInfo.questionPhoto}" width="60" height="60" >
+											</img></a>
+											
+										</td>
+										<td>${questionInfo.tag}</td>
+										<td>${questionInfo.tips}</td>
+										<td>
+											<a href="${url_tag+questionInfo.realAnswerPhoto}"><img src="${url_tag+questionInfo.realAnswerPhoto}" width="60" height="60" >
+											</img></a>
+										</td>
+										<td>
+											<#if questionInfo.teacherId==0>管理员</#if>
+											<#if questionInfo.teacherId!=0>${questionInfo.teacherName}</#if>
+										</td>
+										<td>${questionInfo.bookName}</td>
+										<td>${questionInfo.chapter} </td>
+										<td>${questionInfo.section}</td>
+										<td>${questionInfo.knowledge}</td>
+	 									
+										<td>
+										<#if user_id!=0>
+										<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+												<button class="btn btn-sm btn-purple"
+													onclick="publishHomework('${questionInfo.id}')"
+													data-rel="tooltip">
+													<span> <i class="icon-edit bigger-120"></i>发布为作业
+													</span>
+												</button>
+											</div>
+										</#if>
+										</td> 
+										<td>
+											<#if questionInfo.teacherId==user_id||user_id==0>
+	  											<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+													<button class="btn btn-sm btn-danger"
+														onclick="deletequestion('${questionInfo.id}')"
+														data-rel="tooltip">
+														<span> <i class="icon-trash bigger-120"></i>删除
+														</span>
+													</button>
+												</div> 
+											</#if>
+										</td> 
+									</tr>
+									</#list>
+								</tbody>
+							</table>
+						</div>
+						<#include "/common/common_page.html">
+						<!-- /.table-responsive -->
+					</div>
+					<!-- /span -->
+				</div>
+				<!-- /row -->
+				<!-- PAGE CONTENT ENDS -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+	</div>
+	<!-- /.page-content -->
+
+	<a href="#" id="btn-scroll-up"
+		class="btn-scroll-up btn btn-sm btn-inverse"> <i
+		class="icon-double-angle-up icon-only bigger-110"></i>
+	</a>
+	<div id="edit_question-modal" class="modal fade" tabindex="-1"
+		role="dialog" >
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="blue bigger">编辑题库</h4>
+				</div>
+
+				<div class="modal-body overflow-visible">
+					<form id="edit_question-form" class="form-horizontal"
+						role="form" action="${ctx}/question/ajax/edit" method="post"></form>
+				</div>
+
+				<div class="modal-footer">
+					<button class="btn btn-sm btn-info"
+						onclick="$('#edit_question-form').submit();">
+						<i class="icon-ok"></i> 保存
+					</button>
+					<button class="btn btn-sm" data-dismiss="modal">
+						<i class="icon-remove"></i> 取消
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- inline scripts related to this page -->
+	<script type="text/javascript">
+	function deletequestion(id) {
+	$.messager.confirm("删除题库", "确定要删除该题库信息吗！", function() {
+		window.open("${ctx}/question/delete?id=" + id,"_self");
+	});
+	}
+	function editquestion(id) {
+		$('#edit_question-modal').modal('show');
+		
+
+    }
+  
+	function addQuestionLoad() {
+		$('#add_question-modal').modal('show');
+ 		$('#add_question-form').load(
+			"${ctx}/knowledge/getBookList",
+			function() {	
+			}
+		);  
+    }
+	function addQuestion(id) {
+		$('#add_question-form').submit();
+		$('#add_question').removeClass('btn-info').addClass('disabled');
+
+    }
+	function publishHomework(id) {
+		$('#publish_question_id').val(id);
+		$('#publish_homework-modal').modal('show');
+				var href="${ctx}/class/get_class";
+				$.ajax({
+		    	  url:href,
+		    	  async: false,
+		          type: "POST",
+		          data:{ss:""},
+		    	  success:function(data,status) {
+		    	  				data = $.parseJSON(data);
+								var classNo = document.getElementById("grade_no");
+								var classNoOption = "";
+								for(var i in data.result){
+									classNoOption += "<option value="+data.result[i].class_id+">"+data.result[i].grade_no+"</option>";
+								}
+		    	  				classNo.innerHTML = "";
+								classNo.innerHTML = classNoOption;
+		    	 			 } 
+			
+				 });
+		
+	    }
+	$(function() {
+			
+	
+
+			$("#publish_homework-form").validate();
+			$("#publish_homework-form").bind(
+					'submit',
+					function() {
+						//校验表单
+						if (!$(this).valid()) {
+							return false;
+						}
+						ajaxSubmit(this, function(response) {
+							response = $.parseJSON(response);
+							$('#add_question').removeClass('disabled').addClass('btn-info');
+							if (response.status == 1) {
+								alert("发布成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						});
+						return false;
+					});
+			$("#add_question-form").validate();
+			$("#add_question-form").bind(
+					'submit',
+					function() {
+						//校验表单
+						if (!$(this).valid()) {
+							return false;
+						}
+						ajaxSubmit(this, function(response) {
+							response = $.parseJSON(response);
+							$('#add_question').removeClass('disabled').addClass('btn-info');
+							if (response.status == 1) {
+								alert("添加成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						});
+						return false;
+					});
+			$("#edit_question-form").validate();
+			$("#edit_question-form").bind(
+					'submit',
+					function() {
+						//校验表单
+						if (!$(this).valid()) {
+							return false;
+						}
+						ajaxSubmit(this, function(response) {
+							response = $.parseJSON(response);
+							if (response.status == 1) {
+								alert("修改成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						});
+						return false;
+					});
+	});
+	</script>
+</body>
+</html>

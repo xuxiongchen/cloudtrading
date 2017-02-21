@@ -1,0 +1,591 @@
+
+<div class="from-group">
+	<label class="col-sm-4 control-label no-padding-right">学段*：</label>
+	<div class="col-sm-7">
+		<select name="period" id="period" class="input-no"style="width: 200px;">
+			<option value="1">小学</option>
+			<option value="2">初中</option>
+			<option value="3" selected="selected">高中</option>
+<!-- 			<#list PeriodList as PeriodInfo> -->
+<!-- 				<option value="${PeriodInfo.period}">${PeriodInfo.period}</option> -->
+<!-- 			</#list> -->
+		</select>
+	</div>
+</div>
+
+<div class="from-group">
+	<label class="col-sm-4 control-label no-padding-right">版本*：</label>
+	<div class="col-sm-7">
+		<select name="bookName" id="book_name" class="input-no" style="width: 200px;">
+			<option value="">请先选择版本</option> 
+			
+		</select>
+	</div>
+</div>
+
+
+<div class="from-group">
+	<label class="col-sm-4 control-label no-padding-right">知识板块*：</label>
+	<div class="col-sm-7">
+		<select name="knowledgeId" id="knowledge" class="input-no"style="width: 200px;">
+			<option value="">请先选择节</option>
+		</select>
+	</div>
+</div>
+
+<div class="from-group">
+	<label class="col-sm-4 control-label no-padding-right">模块*：</label>
+	<div class="col-sm-7">
+		<select name="modela" id="modela" class="input-no" style="width: 200px;">
+		</select>
+	</div>
+</div>
+<div class="from-group">
+	<label class="col-sm-4 control-label no-padding-right">章*：</label>
+	<div class="col-sm-7">
+		<select name="chapter" id="chapter" class="input-no"style="width: 200px;">
+			<option value="">请先选择模块</option>
+		</select>
+	</div>
+</div>
+<div class="from-group">
+	<label class="col-sm-4 control-label no-padding-right">节*：</label>
+	<div class="col-sm-7">
+		<select name="section" id="section" class="input-no"style="width: 200px;">
+			<option value="">请先选择章</option>
+		</select>
+	</div>
+</div>
+
+<div class="from-group">
+	<label class="col-sm-4 control-label no-padding-right">问题描述*：</label>
+	<div class="col-sm-7">
+		<input name="question" id="question_desc" value=""	style="width: 200px;" type="text" class="input-small" />
+	</div>
+</div>
+<div class="from-group">
+	<label class="col-sm-11 control-label no-padding-right"></label>
+	<label class="col-sm-3 control-label no-padding-right">上传题目*：</label>
+	<div class="col-sm-3">
+		<!--<input class="input-file uniform_on" style="width: 200px;"id="question-file" type="file" />-->
+		<input class="input-file uniform_on" style="width: 110px;-webkit-border-radius: 10px;background-color: #424242;color: white;
+			height: 31px;font-weight: bold;" id="paste-question-file" placeholder="粘贴刚裁剪的图片" onchange="$(this).val('');"></input>
+	</div>
+	<input type="hidden" id="question-fileUrl" name="question_import_url">
+	<div class="col-sm-5">
+		<input class="input-file uniform_on" style="width: 200px;"id="question_word-file" type="file" />
+	</div>
+	<input type="hidden" id="question_word-fileUrl"name="question_word_import_url">
+</div>
+
+<!-- <div class="from-group">
+										<label class="col-sm-4 control-label no-padding-right">标签（如xx省高考第2题）：</label>
+										<div class="col-sm-7">
+										<input name="tag" value="" style="width:200px;"
+											type="text" class="input-small" />
+										</div>
+</div> -->
+<div class="from-group">
+	<label class="col-sm-11 control-label no-padding-right"></label>
+	<label class="col-sm-4 control-label no-padding-right">标准答案：</label>
+	<div class="col-sm-7">
+		<!--<input class="input-file uniform_on" style="width: 200px;" id="question_answer-file" type="file" />-->
+		<input class="input-file uniform_on" style="width: 110px;-webkit-border-radius: 10px;background-color: #424242;color: white;
+			height: 31px;font-weight: bold;" id="paste-answer-file" placeholder="粘贴刚裁剪的图片" onchange="$(this).val('');"></input>
+	</div>
+	<input type="hidden" id="question_answer-fileUrl" name="question_answer_import_url">
+</div>
+<div class="from-group">
+	<label class="col-sm-11 control-label no-padding-right"></label>
+	<label class="col-sm-4 control-label no-padding-right">题源</label>
+	<div id="tiyuan" class="col-sm-7">
+		<input id="zibianti" type="radio" name="source_type" value="2" checked="checked" />自编题
+		<script>
+			$("#tiyuan").change(
+				function(){
+					if ($("#zibianti").is(":checked")) {
+						$("#subOptions").hide();
+					} else{
+						$("#subOptions").show();
+					}
+				}
+			);
+		</script>
+		<input type="radio" name="source_type" value="0"/>原题
+		<input type="radio" name="source_type" value="1" />改编题
+	</div>
+</div>
+<div id="subOptions" class="from-group" style="display: none;">
+		<label class="col-sm-11 control-label no-padding-right"></label>
+		<label class="col-sm-4 control-label no-padding-right">&emsp;&emsp;&emsp;省份：</label>
+		<div class="col-sm-7">
+			<select name="sf" id="sf" class="input-no" style="width:200px;">
+					<option value="">请选择</option>
+					<option value="北京市">北京市</option>
+					<option value="天津市">天津市</option>
+					<option value="北京市">上海市</option>
+					<option value="北京市">重庆市</option>
+					<option value="广东省">广东省</option>
+					<option value="河南省">河南省</option>			
+					<option value="黑龙江省">黑龙江省</option>			
+					<option value="吉林省">吉林省</option>			
+					<option value="辽宁省">辽宁省</option>			
+					<option value="河北省">河北省</option>			
+					<option value="山西省">山西省</option>			
+					<option value="青海省">青海省</option>			
+					<option value="山东省">山东省</option>			
+					<option value="河南省">河南省</option>			
+					<option value="安徽省">安徽省</option>			
+					<option value="江苏省">江苏省</option>			
+					<option value="浙江省">浙江省</option>			
+					<option value="福建省">福建省</option>			
+					<option value="江西省">江西省</option>			
+					<option value="湖南省">湖南省</option>			
+					<option value="湖北省">湖北省</option>			
+					<option value="台湾省">台湾省</option>			
+					<option value="海南省">海南省</option>			
+					<option value="甘肃省">甘肃省</option>			
+					<option value="陕西省">陕西省</option>			
+					<option value="四川省">四川省</option>			
+					<option value="贵州省">贵州省</option>			
+					<option value="云南省">云南省</option>			
+					<option value="内蒙古自治区">内蒙古自治区</option>			
+					<option value="新疆维吾尔自治区">新疆维吾尔自治区</option>			
+					<option value="西藏自治区">西藏自治区</option>			
+					<option value="宁夏回族自治区">宁夏回族自治区</option>			
+					<option value="广西壮族自治区">广西壮族自治区</option>			
+					<option value="香港特别行政区">香港特别行政区</option>			
+					<option value="澳门特别行政区">澳门特别行政区</option>			
+					<option value="1">其他</option>
+			</select>
+			<input name="province" value="" style="width:200px;" id="sfv" 	type="hidden" class="input-small" />
+		</div>	
+		<label class="col-sm-4 control-label no-padding-right">&emsp;&emsp;&emsp;年份：</label>
+		<div class="col-sm-7">
+			<select name="yearss" id="years" class="input-no" style="width:200px;">
+					<option value="" >请选择</option>
+			</select>
+			<input name="years" value="" style="width:200px;" id="question_year" type="hidden" class="input-small" />
+		</div>
+		<label class="col-sm-4 control-label no-padding-right">&emsp;&emsp;&emsp;考试类型：</label>
+		<div class="col-sm-7">
+			<select name="exam_type" id="exam_type" class="input-no" style="width: 200px;">
+				<option value="">请选择</option>
+				<option value="高考">高考</option>
+				<option value="中考">中考</option>
+				<option value="模拟题">模拟题</option>
+				<option value="真题">真题</option>
+				<option value="1">其他</option>
+			</select>
+			<input name="examType" value="" style="width: 200px;" id="exam_typev"	type="hidden" class="input-small" />
+		</div>
+		<label class="col-sm-4 control-label no-padding-right">&emsp;&emsp;&emsp;文理类型：</label>
+		<div class="col-sm-7">
+			<select name="subject_type" id="subject_type" class="input-no" style="width:200px;">
+					<option value="">请选择</option>
+					<option value="文科">文科</option>
+					<option value="理科">理科</option>
+					<option value="不限">不限</option>
+			</select>
+			<input name="subjectType" value="" style="width:200px;" id="subjectType" type="hidden" class="input-small" />
+		</div>	
+		<label class="col-sm-4 control-label no-padding-right">&emsp;&emsp;&emsp;题号：</label>
+		<div class="col-sm-7">
+			<select name="question_NO" id="question_NO" class="input-no" style="width:200px;">
+					<option value="">请选择</option>
+			</select>
+			<input name="questionNo" value="" style="width:200px;" id="question_no" type="hidden" class="input-small" />
+		</div>	
+</div>
+
+
+<label class="col-sm-11 control-label no-padding-right"></label>
+
+<script type="text/javascript">
+
+
+	$(function() {
+			var nowyear=new Date().getFullYear();
+			var years = document.getElementById("years");
+			var yearsOption = "<option value=''>请选择</option>";
+			for(var i=1977;i<nowyear+1;i++){
+				yearsOption += "<option value="+i+">"+i+"年</option>";
+			}
+			years.innerHTML = "";
+			years.innerHTML = yearsOption; 
+			var question_NO = document.getElementById("question_NO");
+			var question_NOOption = "<option value=''>请选择</option>";
+			for(var i=1;i<31;i++){
+				question_NOOption += "<option value="+i+">"+i+"</option>";
+			}
+			question_NO.innerHTML = "";
+			question_NO.innerHTML = question_NOOption; 
+			var href="${ctx}/knowledge/book_search";
+			
+			/* ============x学段变更============  */
+			$('#period').change(function () {
+				periodChange();
+			});
+			/* ========版本变更===================  */ 
+			$('#book_name').change(function () {
+				bookNameChange();
+			});
+			/* ==============知识板块变更 ============  */
+			
+			$('#knowledge').change(function () { 
+				knowledgeChange();
+			});
+			/* ==============模块变更 ================ */  
+			$('#modela').change(function () {  
+				modelaChange();
+			});
+			/* 章变更 */
+			$('#chapter').change(function () {  	
+				chapterChange();
+			});
+			
+			/* ================================================================func begin======================================================*/
+			var chapterChange=function(){
+				var periodval=$('#period').find("option:selected").val();
+				var bookNameval=$('#book_name').find("option:selected").text();
+				var knowledgeval=$('#knowledge').find("option:selected").text();
+				var modelaval=$('#modela').find("option:selected").text();
+				var chapterval = $('#chapter').find("option:selected").text();
+				$.ajax({
+		    	  url:'${ctx}/knowledge/get_section_list',
+		    	  async: false,
+		          type: "POST",
+		          data:{
+		        	  period:periodval,
+		        	  bookName:bookNameval,
+		        	  knowledge:knowledgeval,
+		        	  modela:modelaval,
+		        	  chapter:chapterval
+		        	  },
+		    	  success:function(data,status) {
+	    	  				data = $.parseJSON(data);
+							var section = document.getElementById("section");
+							var sectionOption="";
+							
+							for(var i in data.result){
+								sectionOption += "<option value="+data.result[i].section+">"+data.result[i].section+"</option>";
+							}
+	    	  				section.innerHTML = "";
+							section.innerHTML = sectionOption;
+	    	 			 } 
+			
+				 });
+			};
+			var modelaChange=function(){
+				var periodval=$('#period').find("option:selected").val();
+				var bookNameval=$('#book_name').find("option:selected").text();
+				var knowledgeval=$('#knowledge').find("option:selected").text();
+				var modelaval=$('#modela').find("option:selected").text();
+				$.ajax({
+		    	  url:'${ctx}/knowledge/get_chapter_list',
+		    	  async: false,
+		          type: "POST",
+		          data:{
+		        	  period:periodval,
+		        	  bookName:bookNameval,
+		        	  knowledge:knowledgeval,
+		        	  modela:modelaval
+		        	  },
+		    	  success:function(data,status) {
+		    	  				data = $.parseJSON(data);
+								var chapter = document.getElementById("chapter");
+								var chapteOption = "";
+							
+								for(var i in data.result){
+									chapteOption += "<option value="+data.result[i].chapter+">"+data.result[i].chapter+"</option>";
+								}
+								chapter.innerHTML = "";
+								chapter.innerHTML = chapteOption;
+								chapterChange();
+		 			 } 
+			
+				 });
+			};
+			var knowledgeChange=function(){
+				var periodval=$('#period').find("option:selected").val();
+				var bookNameval=$('#book_name').find("option:selected").text();
+				var knowledgeval=$('#knowledge').find("option:selected").text();
+				$.ajax({
+		    	  url:'${ctx}/knowledge/get_model_list',
+		    	  async: false,
+		          type: "POST",
+		          data:{period:periodval,bookName:bookNameval,knowledge:knowledgeval},
+		    	  success:function(data,status) {
+		    	  				data = $.parseJSON(data);
+								var modela = document.getElementById("modela");
+								var modelaOption = "";
+								
+								for(var i in data.result){
+									modelaOption += "<option value="+data.result[i].modela+">"+data.result[i].modela+"</option>";
+								}
+								modela.innerHTML = "";
+								modela.innerHTML = modelaOption;
+								modelaChange();
+								$('#question_desc').val($('#knowledge').find("option:selected").text()+'${knowledgeNum}');
+		    	 			 } 
+			
+				 });
+			};
+			
+			var bookNameChange=function(){
+				 var periodval=$('#period').find("option:selected").val();
+				 var bookNameval=$('#book_name').find("option:selected").text()
+					$.ajax({
+				    	  url:'${ctx}/knowledge/get_knowledge_list',
+				    	  async: false,
+				          type: "POST",
+				          data:{period:periodval,bookName:bookNameval},
+				    	  success:function(data,status) {
+				    		  data = $.parseJSON(data);
+								var knowledge = document.getElementById("knowledge");
+								var knowledgeOption = "";
+								for(var i in data.result){
+									knowledgeOption += "<option value="+data.result[i].knowledge_id+">"+data.result[i].knowledge+"</option>";
+								}
+								knowledge.innerHTML = "";
+								knowledge.innerHTML = knowledgeOption;
+								knowledgeChange();
+								$('#question_desc').val($('#knowledge').find("option:selected").text()+'${knowledgeNum}');
+	    	 			 }
+					 });
+			 };
+			var periodChange=function(){
+				$.ajax({
+			    	  url:href,
+			    	  async: false,
+			          type: "POST",
+			          data:{period:$('#period').find("option:selected").val()},
+			    	  success:function(data,status) {
+			    		  data = $.parseJSON(data);
+			    		  var bookName = document.getElementById("book_name");
+			    		  var bookOption;
+			    		  for(var i in data.result){
+			    			  bookOption += "<option value="+data.result[i].book_name+">"+data.result[i].book_name+"</option>";
+		    			  }
+			    		  bookName.innerHTML='';
+			    		  bookName.innerHTML =bookOption;
+			    		  bookNameChange();
+			    		  $('#question_desc').val($('#knowledge').find("option:selected").text()+'${knowledgeNum}');
+			    	  }
+				});
+			};
+			/* ================================================================func end======================================================*/
+			
+			periodChange();
+			
+		
+		$('#sf').change(function () { 
+			var sfv=document.getElementById('sfv') ;
+			sfv.value=$('#sf').find("option:selected").text();
+			if($('#sf').find("option:selected").text()=="其他"){
+				sfv.value="";
+				sfv.type="text";
+			}else {
+				sfv.type="hidden";
+			}
+		});
+		$('#years').change(function () { 
+			var question_year=document.getElementById('question_year') ;
+			question_year.value=$('#years').find("option:selected").text();
+		});
+		$('#subject_type').change(function () { 
+			var subject_type=document.getElementById('subjectType') ;
+			subject_type.value=$('#subject_type').find("option:selected").text();
+		});
+		$('#question_NO').change(function () { 
+			var question_no=document.getElementById('question_no') ;
+			question_no.value=$('#question_NO').find("option:selected").text();
+		});
+		$('#exam_type').change(function () { 
+			var exam_typev=document.getElementById('exam_typev') ;
+			exam_typev.value=$('#exam_type').find("option:selected").text();
+			if($('#exam_type').find("option:selected").text()=="其他"){
+				exam_typev.value="";
+				exam_typev.type="text";
+			}else {
+				exam_typev.type="hidden";
+			}
+		});
+		$('#question-file').uploadify(
+				{
+					'swf' : '${ctx}/static/swf/uploadify.swf',
+					'uploader':'${ctx}/common/question_image',
+					'buttonText' : '选择上传的题目图',
+					'method' : 'post',
+					'fileTypeExts' : '*.jpg;*.png;*.gif;*.bmp;*.jpeg;',
+					'fileObjName' : 'file',
+					'multi' : true,
+					'onUploadSuccess' : function(file, data, response) {
+						data = $.parseJSON(data);
+						if (data.status == 1) {
+							/* $('#add_service_area-imageUrlView').text(
+									data.data.image_uri);
+									alert(data.data.fileurl);
+									alert(data.data.fileuri);
+									*/
+							$('#question-fileUrl').val(
+									data.data.image_url); 
+									
+						} else {
+							alert(data.errormsg);
+						}
+					},
+				});
+		$('#question_word-file').uploadify(
+				{
+					'swf' : '${ctx}/static/swf/uploadify.swf',
+					'uploader':'${ctx}/common/question_word',
+					'buttonText' : '选择上传的题目文档',
+					'method' : 'post',
+					'fileTypeExts' : '*.doc;*.docx;',
+					'fileObjName' : 'file',
+					'multi' : true,
+					'onUploadSuccess' : function(file, data, response) {
+						data = $.parseJSON(data);
+						if (data.status == 1) {
+							/* $('#add_service_area-imageUrlView').text(
+									data.data.image_uri);
+									alert(data.data.fileurl);
+									alert(data.data.fileuri);
+									*/
+							$('#question_word-fileUrl').val(
+									data.data.fileurl); 
+									
+						} else {
+							alert(data.errormsg);
+						}
+					},
+				});
+		$('#question_answer-file').uploadify(
+				{
+					'swf' : '${ctx}/static/swf/uploadify.swf',
+					'uploader':'${ctx}/common/question_image',
+					'buttonText' : '选择上传答案图片',
+					'method' : 'post',
+					'fileTypeExts' : '*.jpg;*.png;*.gif;*.bmp;*.jpeg;',
+					'fileObjName' : 'file',
+					'multi' : true,
+					'onUploadSuccess' : function(file, data, response) {
+						data = $.parseJSON(data);
+						if (data.status == 1) {
+							/* $('#add_service_area-imageUrlView').text(
+									data.data.image_uri);
+									alert(data.data.fileurl);
+									alert(data.data.fileuri);
+									*/
+							$('#question_answer-fileUrl').val(
+									data.data.image_url); 
+									
+						} else {
+							alert(data.errormsg);
+						}
+					},
+				});
+
+
+});
+//程序将粘贴事件绑定到 paste-question-file 上
+	document.getElementById("paste-question-file").addEventListener("paste", function(e) {
+		e.preventDefault();
+		var cbd = e.clipboardData;
+		var ua = window.navigator.userAgent;
+
+		// 如果是 Safari 直接 return
+		if(!(e.clipboardData && e.clipboardData.items)) {
+			return;
+		}
+
+		// Mac平台下Chrome49版本以下 复制Finder中的文件的Bug Hack掉
+		if(cbd.items && cbd.items.length === 2 && cbd.items[0].kind === "string" && cbd.items[1].kind === "file" &&
+			cbd.types && cbd.types.length === 2 && cbd.types[0] === "text/plain" && cbd.types[1] === "Files" &&
+			ua.match(/Macintosh/i) && Number(ua.match(/Chrome\/(\d{2})/i)[1]) < 49) {
+			return;
+		}
+
+		for(var i = 0; i < cbd.items.length; i++) {
+			var item = cbd.items[i];
+			if(item.kind == "file") {
+				var blob = item.getAsFile();
+				if(blob.size === 0) {
+					return;
+				}
+				// blob 就是从剪切板获得的文件 可以进行上传或其他操作
+				uploadingImg(blob,'question-fileUrl',$(this));
+			}
+		}
+	}, false);
+	//程序将粘贴事件绑定到 paste-answer-file 上
+	document.getElementById("paste-answer-file").addEventListener("paste", function(e) {
+		e.preventDefault();
+		var cbd = e.clipboardData;
+		var ua = window.navigator.userAgent;
+
+		// 如果是 Safari 直接 return
+		if(!(e.clipboardData && e.clipboardData.items)) {
+			return;
+		}
+
+		// Mac平台下Chrome49版本以下 复制Finder中的文件的Bug Hack掉
+		if(cbd.items && cbd.items.length === 2 && cbd.items[0].kind === "string" && cbd.items[1].kind === "file" &&
+			cbd.types && cbd.types.length === 2 && cbd.types[0] === "text/plain" && cbd.types[1] === "Files" &&
+			ua.match(/Macintosh/i) && Number(ua.match(/Chrome\/(\d{2})/i)[1]) < 49) {
+			return;
+		}
+
+		for(var i = 0; i < cbd.items.length; i++) {
+			var item = cbd.items[i];
+			if(item.kind == "file") {
+				var blob = item.getAsFile();
+				if(blob.size === 0) {
+					return;
+				}
+				// blob 就是从剪切板获得的文件 可以进行上传或其他操作
+				uploadingImg(blob,'question_answer-fileUrl',$(this));
+			}
+		}z
+	}, false);
+	function uploadingImg(file,fileUrl,self){
+			var reader = null;
+			if(file != null){
+				if(window.FileReader){
+					reader = new FileReader();
+				}else{
+					alert("浏览器暂不支持FileReader上传图片,请尝试使用新的浏览器上传图片！");
+				}
+				if(file != null){
+					reader.readAsDataURL(file);
+					reader.onload = function(){
+						$.ajax({
+							type: "post",
+							url: "${ctx}/common/paste_image",
+							async: true,
+							dataType: "json",
+							data:{
+								file:reader.result,
+								type:file.type
+							},
+							success: function(data) {
+//								data = $.parseJSON(data);
+								if (data.status == 1) {
+									/* $('#add_service_area-imageUrlView').text(
+											data.data.image_uri);
+											alert(data.data.fileurl);
+											alert(data.data.fileuri);
+											*/
+									$('#'+fileUrl).val(data.data.image_url); 
+									$(self)[0].placeholder = "已经上传图片了";
+								} else {
+									alert(data.errormsg);
+								}
+							}
+						});
+					}
+				}
+			}
+		}
+</script>

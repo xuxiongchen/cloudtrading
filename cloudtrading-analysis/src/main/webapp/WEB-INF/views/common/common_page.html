@@ -1,0 +1,30 @@
+
+<div class="row">
+	<div class="col-sm-6">当前显示第${pagebean.currentPage}页(${pagebean.startNum+1}-${pagebean.startNum+pagebean.pageSize}),
+		共${pagebean.totalPage}页${pagebean.totalNum}条 , 每页${pagebean.pageSize}条</div>
+	<div class="col-sm-6">
+		<ul class="pagination">
+			<li<#if (pagebean.currentPage==1)> class="disabled"</#if>> <a
+				href="${ctx}${pageuri}pageid=1"> <i
+					class="icon-double-angle-left"></i>
+			</a>
+			</li> <#if (pagebean.currentPage>2)>
+			<li><a href="${ctx}${pageuri}pageid=${pagebean.currentPage-2}">${pagebean.currentPage-2}</a>
+			</li> </#if> <#if (pagebean.currentPage>1)>
+			<li><a href="${ctx}${pageuri}pageid=${pagebean.currentPage-1}">${pagebean.currentPage-1}</a>
+			</li> </#if>
+			<li class="active"><a
+				href="${ctx}${pageuri}pageid=${pagebean.currentPage}">${pagebean.currentPage}</a>
+			</li> <#if (pagebean.totalPage-pagebean.currentPage>0)>
+			<li><a href="${ctx}${pageuri}pageid=${pagebean.currentPage+1}">${pagebean.currentPage+1}</a>
+			</li> </#if> <#if (pagebean.totalPage-pagebean.currentPage>1)>
+			<li><a href="${ctx}${pageuri}pageid=${pagebean.currentPage+2}">${pagebean.currentPage+2}</a>
+			</li> </#if>
+			<li<#if (pagebean.currentPage==pagebean.totalPage)> class="disabled"</#if>> <a
+				href="${ctx}${pageuri}pageid=${pagebean.totalPage}"> <i
+					class="icon-double-angle-right"></i>
+			</a>
+			</li>
+		</ul>
+	</div>
+</div>

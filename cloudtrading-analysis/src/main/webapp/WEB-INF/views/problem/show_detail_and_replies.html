@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="decorator" content="default" />
+<title>社区问答回复管理</title>
+</head>
+
+<body>
+
+	<div class="page-content">
+		<div class="page-header">
+			<h1>社区问答回复管理</h1>
+		</div>
+		<h2>问题：</h2>
+		<div class="table-responsive">
+			<table id="sample-table-1"
+				class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>标题</th>
+						<th>问题类别</th>
+						<th>发布人身份</th>
+						<th>发布人姓名</th>
+						<th>内容文字</th>
+						<th>内容图片</th>
+						<th>发布时间</th>
+
+					</tr>
+				</thead>
+				<tbody>
+
+					<tr>
+
+						<td>${qandAVo.title}</td>
+						<td>${qandAVo.problemClassificationName}</td>
+
+						<td><#if qandAVo.userType == 1> 学生</#if> <#if
+							qandAVo.userType == 2> 教师</#if></td>
+						<td><#if qandAVo.userType == 1> ${qandAVo.studentName}</#if>
+							<#if qandAVo.userType == 2> ${qandAVo.teacherName}</#if></td>
+						<td>${qandAVo.problemDescription}</td>
+						<td><#if qandAVo.problemPhotoKey != null &&
+							qandAVo.problemPhotoKey !=""> <a
+							href="${url_tag+qandAVo.problemPhotoKey}"> <img
+								src="${url_tag+qandAVo.problemPhotoKey}" width="60" height="60"></img>
+						</a> </#if>
+						</td>
+						<td>${qandAVo.publishDate}</td>
+				</tbody>
+			</table>
+		</div>
+		<hr>
+		<!-- /.page-header -->
+		<h2>回复：</h2>
+		<div class="row">
+			<div class="col-xs-12">
+				<!-- PAGE CONTENT BEGINS -->
+				<form class="form-inline" action="${ctx}/problem/replies_search"
+					method="post">
+					<div class="row">
+						<div class="col-xs-12 col-sm-8">
+							<div class="input-group">
+								回复人姓名：<input name="replierRealName"
+									value="${problemReplyVo.replierRealName}" type="text"
+									class="input-small" /> 回复内容：<input name="reply"
+									value="${problemReplyVo.reply}" type="text" class="input-small" />
+								&nbsp;
+								<button type="submit" class="btn btn-purple btn-sm">
+									查询 <i class="icon-search icon-on-right bigger-110"></i>
+								</button>
+								<input name="problemId" value="${qandAVo.id}" hidden="hidden" />
+
+							</div>
+						</div>
+					</div>
+				</form>
+				<br>
+				<button class="btn btn-sm btn-danger" onclick="deleteCheckReplyMass()"
+					data-rel="tooltip">
+					<span> <i class="icon-trash bigger-120"></i>删除
+					</span>
+				</button>
+
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="table-responsive">
+							<table id="sample-table-1"
+								class="table table-striped table-bordered table-hover">
+								<thead>
+									<tr>
+										<th class="center"><label> <input type="checkbox"
+												class="ace" id="ace" /> <span class="lbl"></span>
+										</label></th>
+										<th>回复人身份</th>
+										<th>回复人姓名</th>
+										<th>内容文字</th>
+										<th>内容图片</th>
+										<th>回复时间</th>
+										<th>是否被采纳</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<#list problemReplyVoList as problemReplyVo2>
+									<tr>
+										<td class="center"><label> <input type="checkbox"
+												class="one" value="${problemReplyVo2.replyId}" /> <span class="lbl"></span>
+										</label></td>
+
+
+										<td><#if problemReplyVo2.replierType == 1> 学生</#if> <#if
+											problemReplyVo2.replierType == 2> 教师</#if></td>
+										<td>${problemReplyVo2.replierRealName}</td>
+										<td>${problemReplyVo2.reply}</td>
+										<td><#if problemReplyVo2.replyPhoto != null &&
+											problemReplyVo2.replyPhoto!=""> <a
+											href="${url_tag+problemReplyVo2.replyPhoto}"> <img
+												src="${url_tag+problemReplyVo2.replyPhoto}" width="60"
+												height="60"></img>
+										</a> </#if>
+										</td>
+										<td>${problemReplyVo2.replyTime}</td>
+										<td><#if problemReplyVo2.isAdopt == 0> 否</#if> <#if
+											problemReplyVo2.isAdopt == 1> 是</#if></td>
+										<td>
+											<div
+												class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+												<button class="btn btn-sm btn-danger"
+													onclick="deleteReply('${problemReplyVo2.replyId}',1)"
+													data-rel="tooltip">
+													<span> <i class="icon-trash bigger-120"></i>删除
+													</span>
+												</button>
+											</div>
+										</td>
+									</tr>
+									</#list>
+								</tbody>
+							</table>
+						</div>
+						<#include "/common/common_page.html">
+						<!-- /.table-responsive -->
+					</div>
+					<!-- /span -->
+				</div>
+				<!-- /row -->
+				<!-- PAGE CONTENT ENDS -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+	</div>
+	<!-- /.page-content -->
+
+	<!-- inline scripts related to this page -->
+	<script type="text/javascript">
+		function deleteReply(replyId,count) {
+			$.messager.confirm("删除回复", "确定要删除该回复吗!", function() {
+				$.ajax({
+					type : "post",
+					url : "${ctx}/problem/delete_problem_reply",
+					data : "ids=" + replyId,
+					async : false,
+					success : function(data) {
+						data = $.parseJSON(data);
+						if (data.status == 1) {
+							alert("选中 "+count+" 条，成功删除 " + data.data.deleteNumber
+									+ " 条");
+							window.location.reload();
+						} else {
+							alert(data.errormsg);
+						}
+					}
+				});
+			});
+		}
+		function detailQandA(id) {
+			window.open("${ctx}/problem/showDetailAndReplies?problemid=" + id,
+					"_self");
+		}
+		window.onload = function() {
+			var ace = $('#ace');
+			var one = $('.one');
+			//全选
+			ace.click(function() {
+				var leap = ace.is(':checked');
+
+				for (i = 0; i < one.length; i++) {
+					one[i].checked = leap;
+				}
+				;
+			});
+			one.click(function() {
+				var oneLeap = $(this).is(':checked');
+				var aceLeap = ace.is(':checked');
+				if (aceLeap == true) {
+					ace.removeAttr("checked");
+					return;
+				}
+				if (oneLeap == false)
+					return;
+				for (i = 0; i < one.length; i++) {
+					if (one[i].checked == false) {
+						return;
+					}
+
+				}
+				ace[0].checked = true;
+			});
+
+		};
+		//批量删除
+		function deleteCheckReplyMass() {
+			var ids = "";
+			var one = $('.one');
+			var count = 0;
+			
+			for (i = 0; i < one.length; i++) {
+				if (one[i].checked == true) {
+					if(count==0) {
+						ids = one[i].value;
+					}else {
+						ids = ids + "," + one[i].value
+					}					
+					count++;
+				}
+			}
+			if(count==0) {
+				alert("请选择删除条目");
+				return;
+			}
+			deleteReply(ids,count);
+		}
+	</script>
+</body>
+</html>

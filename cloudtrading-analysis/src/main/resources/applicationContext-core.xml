@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/cache
+	http://www.springframework.org/schema/cache/spring-cache.xsd ">
+
+	<description>Spring公共配置 </description>
+	<!-- 定义 aop Aspect自动代理 -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+
+	<!-- 使用 annotation 自动注册 bean,并保证 @Required, @Autowired 的属性被注入 -->
+	<context:component-scan base-package="com.cloudtrading">
+		<context:include-filter type="annotation"
+			expression="org.aspectj.lang.annotation.Aspect" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	<bean id="orikaBeanMapper" class="com.huisa.common.beans.mapping.orika.OrikaBeanMapper" >
+		<property name="basePackage" value="com.cloudtrading.**" />
+	</bean>
+
+	<!-- 缓存配置 -->
+	<bean id="ehCacheManager"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:ehcache-local.xml" />
+	</bean>
+ 	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManager" ref="ehCacheManager" />
+	</bean>
+	<!--安全管理器 -->
+ 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<!-- 集成上数据访问的Realm -->
+		<!-- <property name="realm" ref="systemAuthorizingRealm"></property> -->
+		<!-- 集成上缓存管理器 -->
+		<property name="cacheManager" ref="shiroCacheManager"></property>
+	</bean>
+	<!-- shiro主过滤器的配置 -->
+	<bean id="shiroSecurityFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<!-- 集成上安全管理器 -->
+		<property name="securityManager" ref="securityManager"></property>
+		<property name="loginUrl" value="/login"></property>
+		<property name="successUrl" value="/index"></property>
+		<!-- 过滤器链，对URL配置过滤规则 -->
+		<property name="filterChainDefinitions">
+			<value>
+				/=anon
+				/static/** = anon
+				/login=anon
+				/logout=anon
+				/common/**=anon
+				/**=authc
+			</value>
+		</property>
+	</bean>
+	<!--保证shiro内部生命周期的bean被执行 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+	<!-- 以下两个是关于启用注解的配置 -->
+	<bean
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		depends-on="lifecycleBeanPostProcessor"></bean>
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+
+
+	<!-- 定义正式环境的配置文件 -->
+<!-- 	<beans profile="production">
+		<context:property-placeholder
+			ignore-resource-not-found="true" location="classpath*:/application.properties" />
+	</beans> -->
+
+	<!-- 定义开发环境配置文件 -->
+<!-- 	<beans profile="development">
+		<context:property-placeholder
+			ignore-resource-not-found="true" location="classpath*:/application.dev.properties" />
+	</beans> -->
+
+</beans>

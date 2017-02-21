@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="decorator" content="default" />
+<title>作业信息管理</title>
+</head>
+
+<body>
+
+	<div class="page-content">
+		<div class="page-header">
+			<h1>作业信息管理【${searchTotal}/${total}】</h1>
+		</div>
+		<!-- /.page-header -->
+		<div class="row">
+			<div class="col-xs-12">
+				<!-- PAGE CONTENT BEGINS -->
+				<form class="form-inline" action="${ctx}/homework/search"
+					method="post">
+					<div class="row">
+						<div class="col-xs-12 col-sm-8">
+							<div class="input-group">
+								老师工号：<input name="teacherNo" value="${homeworkInfo.teacherNo}"
+									type="text" class="input-small" /> 
+									
+								老师名：<input name="teacherName" value="${homeworkInfo.teacherName}"
+									type="text" class="input-small" /> 
+								年级：<input name="classGrade" value="${homeworkInfo.classGrade}"
+									type="text" class="input-small" /> 
+								班号：<input name="classNo" value="${homeworkInfo.classNo}"
+									type="text" class="input-small" /> 
+									<br>
+								问题描述：<input name="questionDesc" value="${homeworkInfo.questionDesc}"
+									type="text" class="input-small" /> 
+								章：<input name="chapter" value="${homeworkInfo.chapter}" 
+									type="text" class="input-small" />
+								节：<input name="section" value="${homeworkInfo.section}" 
+									type="text" class="input-small" />
+								知识点：<input name="knowledgePoint" value="${homeworkInfo.knowledgePoint}" 
+									type="text" class="input-small" />
+									
+									&nbsp;	
+								<button type="submit" class="btn btn-purple btn-sm">
+									查询 <i class="icon-search icon-on-right bigger-110"></i>
+								</button>		
+							</div>
+						</div>
+					</div>
+				</form> 
+	
+				
+	
+	<div id="add_homework-modal" class="modal fade" tabindex="-1"
+		role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="blue bigger">新增作业</h4>
+				</div>
+				<div class="modal-body overflow-visible">
+					<form class="form-inline"
+						action="${ctx}/homework/add"
+						id="add_homework-form" method="post">
+						<div class="row">
+							<div class="col-xs-12">
+								<!-- PAGE CONTENT BEGINS -->
+								<div class="from-group">
+									<div class="input-group">
+										<label class="col-sm-3 control-label no-padding-right">编号：</label>
+										<div class="col-sm-7">
+											<input type="text" name="homeworkNo" class="col-xs-10 col-sm-5"
+												value="" required/>
+										</div>
+										<label class="col-sm-3 control-label no-padding-right">名称：</label>
+										<div class="col-sm-7">
+											<input type="text" name="homeworkName"
+												class="col-xs-10 col-sm-5" value="" />
+										</div>
+										<label class="col-sm-3 control-label no-padding-right">地址：</label>
+										<div class="col-sm-7">
+											<input type="text" name="address"
+												class="col-xs-10 col-sm-5" value="" />
+										</div>
+										<label class="col-sm-3 control-label no-padding-right">邮政编码：</label>
+										<div class="col-sm-7">
+											<input type="text" name="postalCode"
+												class="col-xs-10 col-sm-5" value="" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-sm btn-info"
+						onclick="$('#add_homework-form').submit();">
+						<i class="icon-ok"></i> 提交
+					</button>
+					<button class="btn btn-sm" data-dismiss="modal">
+						<i class="icon-remove"></i> 取消
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>	
+
+	
+	
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="table-responsive">
+							<table id="sample-table-1"
+								class="table table-striped table-bordered table-hover">
+								<thead>
+									<tr>
+										<!-- <th class="center"><label> <input type="checkbox"
+												class="ace" /> <span class="lbl"></span>
+										</label></th> -->
+										<th>老师工号</th>
+										<th>老师名</th>
+										<th>年级</th>
+										<th>班号</th>
+										<th>题目编号</th>
+										<th>描述</th>
+										<th>图片</th>
+										<th>章</th>
+										<th>节</th>
+										<th>知识点</th>
+										<th>发布时间</th>
+										<th>截止时间</th>
+										
+										<th></th>	
+										<th></th>									
+									</tr>
+								</thead>
+								<tbody>
+									<#list homeworkInfoList as homeworkInfo>
+									<tr>
+										<!-- <td class="center"><label> <input type="checkbox"
+												class="ace" /> <span class="lbl"></span>
+										</label></td> -->
+										<td>${homeworkInfo.teacherNo}</td>
+										<td>${homeworkInfo.teacherName}</td>
+										<td>${homeworkInfo.classGrade}</td>
+										<td>${homeworkInfo.classNo}</td>
+										<td>${homeworkInfo.questionId}</td>
+										<td>${homeworkInfo.questionDesc}</td>
+										<td>
+											<a href="javascript:void(0);" onclick="showImage('${url_tag+homeworkInfo.questionPhotoUrl}','${homeworkInfo.questionDesc}');"> 
+											<img src="${url_tag+homeworkInfo.questionPhotoUrl}" width="60" height="60" ></img>
+											</a> 
+										</td>
+										<td>${homeworkInfo.chapter}</td>
+										<td>${homeworkInfo.section}</td>
+										<td>${homeworkInfo.knowledgePoint}</td>
+										<td>${homeworkInfo.publishDate}</td>
+										<td>${homeworkInfo.expirationDate}</td>
+										<td>
+										
+<!-- 											<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+												<button class="btn btn-sm btn-purple"
+													onclick="edithomework('${homeworkInfo.id}')"
+													data-rel="tooltip">
+													<span> <i class="icon-edit bigger-120"></i>编辑
+													</span>
+												</button>
+											</div> -->
+										</td>
+										
+										<td>
+  											<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+												<button class="btn btn-sm btn-danger" 
+													onclick="deletehomework('${homeworkInfo.homeworkId}')"
+													data-rel="tooltip">
+													<span> <i class="icon-trash bigger-120"></i>删除
+													</span>
+												</button>
+											</div>
+										</td> 
+									</tr>
+									</#list>
+								</tbody>
+							</table>
+						</div>
+						<#include "/common/common_page.html">
+						<!-- /.table-responsive -->
+					</div>
+					<!-- /span -->
+				</div>
+				<!-- /row -->
+				<!-- PAGE CONTENT ENDS -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+	</div>
+	<!-- /.page-content -->
+
+	<a href="#" id="btn-scroll-up"
+		class="btn-scroll-up btn btn-sm btn-inverse"> <i
+		class="icon-double-angle-up icon-only bigger-110"></i>
+	</a>
+	<div id="edit_homework-modal" class="modal fade" tabindex="-1"
+		role="dialog" >
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="blue bigger">编辑作业</h4>
+				</div>
+
+				<div class="modal-body overflow-visible">
+					<form id="edit_homework-form" class="form-horizontal"
+						role="form" action="${ctx}/homework/ajax/edit" method="post"></form>
+				</div>
+
+				<div class="modal-footer">
+					<button class="btn btn-sm btn-info"
+						onclick="$('#edit_homework-form').submit();">
+						<i class="icon-ok"></i> 保存
+					</button>
+					<button class="btn btn-sm" data-dismiss="modal">
+						<i class="icon-remove"></i> 取消
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ====================作业图片=================== -->
+	<div id="image-modal" class="modal fade" tabindex="-1" role="dialog" >
+		<div class="modal-dialog modal-lg" style="width: 100%;">
+			<div class="modal-content" style="width: 100%;">
+				<div class="modal-header" style="width: 100%;">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 id="imageTitle" class="blue bigger"></h4>
+				</div>
+				<img id="image" style="width: 100%;" />
+			</div>
+		</div>
+	</div>
+
+	<!-- inline scripts related to this page -->
+	<script type="text/javascript">
+	function deletehomework(id) {
+		$.messager.confirm("删除作业", "确定要删除该作业信息吗!", function() {
+			window.open("${ctx}/homework/delete?id=" + id,"_self");
+		});
+	}
+	function edithomework(id) {
+	$('#edit_homework-modal').modal('show');
+	$('#edit_homework-form').load(
+			"${ctx}/homework/edit?id=" + id,
+			function() {	
+			}
+		);
+    }
+	$(function() {
+			
+			$("#add_homework-form").validate();
+			$("#add_homework-form").bind(
+					'submit',
+					function() {
+						//校验表单
+						if (!$(this).valid()) {
+							return false;
+						}
+						ajaxSubmit(this, function(response) {
+							response = $.parseJSON(response);
+							if (response.status == 1) {
+								alert("添加成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						});
+						return false;
+					});
+			$("#edit_homework-form").validate();
+			$("#edit_homework-form").bind(
+					'submit',
+					function() {
+						//校验表单
+						if (!$(this).valid()) {
+							return false;
+						}
+						ajaxSubmit(this, function(response) {
+							response = $.parseJSON(response);
+							if (response.status == 1) {
+								alert("修改成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						});
+						return false;
+					});
+	});
+	function showImage(url,title){
+		$('#image-modal').modal('show');
+		$("#imageTitle").html("作业图片：" + title);
+		document.getElementById("image").src = url;
+	}
+	</script>
+</body>
+</html>

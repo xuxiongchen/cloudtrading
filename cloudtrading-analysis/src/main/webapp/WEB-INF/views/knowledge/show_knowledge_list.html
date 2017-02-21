@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="decorator" content="default" />
+<title>书本章节知识点管理</title>
+</head>
+
+<body>
+
+	<div class="page-content">
+		<div class="page-header">
+			<h1>书本章节知识点管理</h1>
+		</div>
+		<!-- /.page-header -->
+		<div class="row">
+			<div class="col-xs-12">
+				<!-- PAGE CONTENT BEGINS -->
+				<form class="form-inline" action="${ctx}/knowledge/search"
+					method="post">
+					<div class="row">
+						<div class="col-xs-12 col-sm-8">
+							<div class="input-group">
+								版本：<input name="bookName" value="${knowledgeInfo.bookName}"
+									type="text" class="input-small" /> 
+								模块：<input name="modela" value="${knowledgeInfo.modela}"
+									type="text" class="input-small" /> 
+								章：<input name="chapter" value="${knowledgeInfo.chapter}" 
+									type="text" class="input-small" />
+								节：<input name="section" value="${knowledgeInfo.section}" 
+									type="text" class="input-small" />
+								知识点：<input name="knowledge" value="${knowledgeInfo.postal_code}" 
+									type="text" class="input-small" />
+									&nbsp;	
+								<button type="submit" class="btn btn-purple btn-sm">
+									查询 <i class="icon-search icon-on-right bigger-110"></i>
+								</button>
+								<button class="btn btn-sm btn-purple" data-toggle="modal"
+									data-target="#import_knowledge-modal">
+									<i class="icon-edit bigger-120"></i>批量导入
+								</button>		
+							</div>
+						</div>
+					</div>
+				</form> 
+	
+				
+	
+	<div id="add_knowledge-modal" class="modal fade" tabindex="-1"
+		role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="blue bigger">新增学校</h4>
+				</div>
+				<div class="modal-body overflow-visible">
+					<form class="form-inline"
+						action="${ctx}/knowledge/add"
+						id="add_knowledge-form" method="post">
+						<div class="row">
+							<div class="col-xs-12">
+								<!-- PAGE CONTENT BEGINS -->
+								<div class="from-group">
+									<div class="input-group">
+										<label class="col-sm-3 control-label no-padding-right">书本：</label>
+										<div class="col-sm-7">
+											<input type="text" name="bookName" class="col-xs-10 col-sm-5"
+												value="" required/>
+										</div>
+										<label class="col-sm-3 control-label no-padding-right">书本：</label>
+										<div class="col-sm-7">
+											<input type="text" name="modela" class="col-xs-10 col-sm-5"
+												value="" required/>
+										</div>
+										<label class="col-sm-3 control-label no-padding-right">章：</label>
+										<div class="col-sm-7">
+											<input type="text" name="chapter"
+												class="col-xs-10 col-sm-5" value="" />
+										</div>
+										<label class="col-sm-3 control-label no-padding-right">节：</label>
+										<div class="col-sm-7">
+											<input type="text" name="section"
+												class="col-xs-10 col-sm-5" value="" />
+										</div>
+										<label class="col-sm-3 control-label no-padding-right">知识点：</label>
+										<div class="col-sm-7">
+											<input type="text" name="knowledge"
+												class="col-xs-10 col-sm-5" value="" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-sm btn-info"
+						onclick="$('#add_knowledge-form').submit();">
+						<i class="icon-ok"></i> 提交
+					</button>
+					<button class="btn btn-sm" data-dismiss="modal">
+						<i class="icon-remove"></i> 取消
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>	
+
+		<div id="import_knowledge-modal" class="modal fade" tabindex="-1"
+		role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="blue bigger">批量导入</h4>
+				</div>
+				<div class="modal-body overflow-visible">
+					<form class="form-inline"
+						action="${ctx}/knowledge/import" 
+						id="import_knowledge-form" method="post">
+<!--                            <div class="ace-file-input ace-file-multiple">
+                              <input multiple="" type="file" id="id-input-file" name="file" />
+                              <a class="remove" href="#">
+                                <i class="icon-remove"></i>
+                              </a>
+                          </div> --> 
+                    			<div class="form-group" id="knowledge-upload">
+									<label class="col-sm-3 control-label no-padding-right">导入:</label>
+									<div class="col-sm-7">
+										<input class="input-file uniform_on"
+											id="knowledge-file" type="file"/> 
+									</div>
+								</div>
+								<input type="hidden" id="knowledge-fileUrl" name="knowledge_import_url">	
+						
+                    </form>						
+					
+				</div>
+				<div class="modal-footer">
+
+                     <div class="btn btn-sm">
+                          <a class="btn btn-sm btn-primary" id="btn-download" href="${ctx}/static/down/book_knowledge.xls">下载模板</a>
+                    </div>
+
+					<button class="btn btn-sm"
+						onclick="$('#import_knowledge-form').submit();" id="btn-upload">
+						<i class="icon-ok"></i> 上传
+					</button>
+					<button class="btn btn-sm" data-dismiss="modal">
+						<i class="icon-remove"></i> 取消
+					</button>  
+				</div>
+			</div>
+		</div>
+	</div>	
+	
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="table-responsive">
+							<table id="sample-table-1"
+								class="table table-striped table-bordered table-hover">
+								<thead>
+									<tr>
+										<!-- <th class="center"><label> <input type="checkbox"
+												class="ace" /> <span class="lbl"></span>
+										</label></th> -->
+										
+										<th>编号</th>
+										<th>版本</th>
+										<th>模块</th>
+										<th>章</th>
+										<th>节</th>
+										<th>知识点</th>
+										<th></th>	
+										<th></th>									
+									</tr>
+								</thead>
+								<tbody>
+									<#list knowledgeInfoList as knowledgeInfo>
+									<tr>
+										<!-- <td class="center"><label> <input type="checkbox"
+												class="ace" /> <span class="lbl"></span>
+										</label></td> -->
+										<td>${knowledgeInfo.id}</td>
+										<td>${knowledgeInfo.bookName}</td>
+										<td>${knowledgeInfo.modela}</td>
+										<td>${knowledgeInfo.chapter}</td>
+										<td>${knowledgeInfo.section}</td>
+										<td>
+											${knowledgeInfo.knowledge}
+										</td>
+										<td>
+										
+											<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+												<button class="btn btn-sm btn-purple"
+													onclick="editknowledge('${knowledgeInfo.id}')"
+													data-rel="tooltip">
+													<span> <i class="icon-edit bigger-120"></i>编辑
+													</span>
+												</button>
+											</div>
+										</td>
+										
+										<td>
+ 											<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+												<button class="btn btn-sm btn-danger"
+													onclick="deleteknowledge('${knowledgeInfo.id}')"
+													data-rel="tooltip">
+													<span> <i class="icon-trash bigger-120"></i>删除
+													</span>
+												</button>
+											</div> 
+										</td> 
+									</tr>
+									</#list>
+								</tbody>
+							</table>
+						</div>
+						<#include "/common/common_page.html">
+						<!-- /.table-responsive -->
+					</div>
+					<!-- /span -->
+				</div>
+				<!-- /row -->
+				<!-- PAGE CONTENT ENDS -->
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+	</div>
+	<!-- /.page-content -->
+
+	<a href="#" id="btn-scroll-up"
+		class="btn-scroll-up btn btn-sm btn-inverse"> <i
+		class="icon-double-angle-up icon-only bigger-110"></i>
+	</a>
+	<div id="edit_knowledge-modal" class="modal fade" tabindex="-1"
+		role="dialog" >
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="blue bigger">编辑学校</h4>
+				</div>
+
+				<div class="modal-body overflow-visible">
+					<form id="edit_knowledge-form" class="form-horizontal"
+						role="form" action="${ctx}/knowledge/ajax/edit" method="post"></form>
+				</div>
+
+				<div class="modal-footer">
+					<button class="btn btn-sm btn-info"
+						onclick="$('#edit_knowledge-form').submit();">
+						<i class="icon-ok"></i> 保存
+					</button>
+					<button class="btn btn-sm" data-dismiss="modal">
+						<i class="icon-remove"></i> 取消
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- inline scripts related to this page -->
+	<script type="text/javascript">
+	function deleteknowledge(id) {
+	$.messager.confirm("删除学校", "确定要删除该章节知识点信息吗!（删除后将对题库中利用该知识点产生的题目造成影响！）", function() {
+		window.open("${ctx}/knowledge/delete?id=" + id,"_self");
+	});
+	}
+	function editknowledge(id) {
+	$('#edit_knowledge-modal').modal('show');
+	$('#edit_knowledge-form').load(
+			"${ctx}/knowledge/edit?id=" + id,
+			function() {	
+			}
+		);
+    }
+	$(function() {
+			$('#knowledge-file').uploadify(
+					{
+						'swf' : '${ctx}/static/swf/uploadify.swf',
+						'uploader':'${ctx}/common/excelupload',
+						'buttonText' : '选择要上传的EXCEL',
+						'method' : 'post',
+						'fileTypeExts' : '*.xls;*.xlsx;',
+						'fileObjName' : 'file',
+						'multi' : true,
+						'onUploadSuccess' : function(file, data, response) {
+							data = $.parseJSON(data);
+							if (data.status == 1) {
+								/* $('#add_service_area-imageUrlView').text(
+										data.data.image_uri);
+										alert(data.data.fileurl);
+										alert(data.data.fileuri);
+										*/
+								$('#knowledge-fileUrl').val(
+										data.data.fileurl); 
+										
+							} else {
+								alert(data.errormsg);
+							}
+						},
+					});
+	
+	
+	
+	
+			
+			$("#add_knowledge-form").validate();
+			$("#add_knowledge-form").bind(
+					'submit',
+					function() {
+						//校验表单
+						if (!$(this).valid()) {
+							return false;
+						}
+						ajaxSubmit(this, function(response) {
+							response = $.parseJSON(response);
+							if (response.status == 1) {
+								alert("添加成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						});
+						return false;
+					});
+			$("#edit_knowledge-form").validate();
+			$("#edit_knowledge-form").bind(
+					'submit',
+					function() {
+						//校验表单
+						if (!$(this).valid()) {
+							return false;
+						}
+						ajaxSubmit(this, function(response) {
+							response = $.parseJSON(response);
+							if (response.status == 1) {
+								alert("修改成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						});
+						return false;
+					});
+			$("#import_knowledge-form").validate();
+			$("#import_knowledge-form").bind(
+					'submit',
+					function() {
+						//校验表单
+						if (!$(this).valid()) {
+							return false;
+						}
+						ajaxSubmit(this, function(response) {
+							response = $.parseJSON(response);
+							if (response.status == 1) {
+								alert("导入成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						});
+						return false;
+					});
+	});
+	</script>
+</body>
+</html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta name="decorator" content="default" />
+		<title>教师信息管理</title>
+	</head>
+
+	<body>
+
+		<div class="page-content">
+			<div class="page-header">
+				<h1>教师信息管理</h1>
+			</div>
+			<!-- /.page-header -->
+			<div class="row">
+				<div class="col-xs-12">
+					<!-- PAGE CONTENT BEGINS -->
+					<form class="form-inline" action="${ctx}/teacher/search" method="post">
+						<div class="row">
+							<div class="col-xs-12 col-sm-8">
+								<div class="input-group">
+
+									用户名：<input name="userName" value="${teacherInfo.userName}" type="text" class="input-small" /> 姓名：
+									<input name="realName" value="${teacherInfo.realName}" type="text" class="input-small" /> 性别：
+									<select name="sex" class="input-no">
+											<option value="">请选择性别</option>
+											<option value="1">男</option>
+											<option value="2">女</option>
+									</select> &nbsp;
+									<button type="submit" class="btn btn-purple btn-sm">
+									查询 <i class="icon-search icon-on-right bigger-110"></i>
+								</button>
+									<br> 工号：
+									<input name="teacherNo" value="${teacherInfo.teacherNo}" type="text" class="input-small" /> 手机号码：
+									<input name="phone" value="${teacherInfo.phone}" type="text" class="input-small" /> 邮箱：
+									<input name="email" value="${teacherInfo.email}" type="text" class="input-small" /> &nbsp;
+									<button class="btn btn-sm btn-purple" data-toggle="modal" data-target="#add_teacher-modal" onclick="addTeacher();">
+									<i class="icon-edit bigger-120"></i>增加新教师
+								</button>
+
+								</div>
+							</div>
+						</div>
+					</form>
+
+					<div id="add_teacher-modal" class="modal fade" tabindex="-1" role="dialog">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="blue bigger">新增教师</h4>
+								</div>
+								<div class="modal-body overflow-visible">
+									<form class="form-inline" action="${ctx}/teacher/add" id="add_teacher-form" method="post">
+										<div class="row">
+											<div class="col-xs-12">
+												<!-- PAGE CONTENT BEGINS -->
+												<div class="from-group">
+													<div class="input-group">
+														<label class="col-sm-4 control-label no-padding-right">工号(密码)：</label>
+														<div class="col-sm-7">
+															<input name="teacherNo" value="" style="width:200px;" type="text" class="input-small" />
+														</div>
+														<label class="col-sm-4 control-label no-padding-right">学校：</label>
+														<div class="col-sm-7">
+															<select name="schoolId" id="school_id" style="width:200px;" class="input-no">
+											</select>
+														</div>
+														<label class="col-sm-4 control-label no-padding-right">手机号码(登录账号)：</label>
+														<div class="col-sm-7">
+															<input name="phone" value="" style="width:200px;" type="text" class="input-small" />
+														</div>
+														<label class="col-sm-4 control-label no-padding-right">邮箱：</label>
+														<div class="col-sm-7">
+															<input name="email" value="" style="width:200px;" type="text" class="input-small" />
+														</div>
+														<label class="col-sm-4 control-label no-padding-right">用户名：</label>
+														<div class="col-sm-7">
+															<input name="userName" value="" style="width:200px;" type="text" class="input-small" />
+														</div>
+														<label class="col-sm-4 control-label no-padding-right">姓名：</label>
+														<div class="col-sm-7">
+															<input name="realName" value="" style="width:200px;" type="text" class="input-small" />
+														</div>
+														<label class="col-sm-4 control-label no-padding-right">性别：</label>
+														<div class="col-sm-7">
+															<select name="sex" class="input-no" style="width:200px;">
+													<option value="">请选择性别</option>
+													<option value="1">男</option>
+													<option value="2">女</option>
+												</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button class="btn btn-sm btn-info" onclick="$('#add_teacher-form').submit();">
+						<i class="icon-ok"></i> 提交
+					</button>
+									<button class="btn btn-sm" data-dismiss="modal">
+						<i class="icon-remove"></i> 取消
+					</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="table-responsive">
+								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+									<thead>
+										<tr>
+											<!-- <th class="center"><label> <input type="checkbox"
+												class="ace" /> <span class="lbl"></span>
+										</label></th> -->
+											<th>工号</th>
+											<th>用户名</th>
+											<th>真实姓名</th>
+											<th>性别</th>
+											<th>手机号码</th>
+											<th>邮箱</th>
+											<th>班级头像</th>
+											<th>社区头像</th>
+											<th></th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<#list teacherInfoList as teacherInfo>
+											<tr>
+												<!-- <td class="center"><label> <input type="checkbox"
+												class="ace" /> <span class="lbl"></span>
+										</label></td> -->
+												<td>${teacherInfo.teacherNo}</td>
+												<td>${teacherInfo.userName}</td>
+												<td>${teacherInfo.realName}</td>
+												<td>
+													<#if teacherInfo.sex==1>男</#if>
+													<#if teacherInfo.sex==2>女</#if>
+												</td>
+												<td>${teacherInfo.phone}</td>
+												<td>${teacherInfo.email}</td>
+												<td>
+													<img src="${url_tag+teacherInfo.classPortraitPhoto}" width="60" height="60"></img>
+												</td>
+												<td>
+													<img src="${url_tag+teacherInfo.communityPortraitPhoto}" width="60" height="60"></img>
+												</td>
+												<td>
+													<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+														<button class="btn btn-sm btn-purple" onclick="setClass('${teacherInfo.id}','${teacherInfo.schoolId}')" data-rel="tooltip">
+													<span> <i class="icon-edit bigger-120"></i>设置班级
+													</span>
+												</button>
+													</div>
+												</td>
+
+												<td>
+													<!--  										<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+												<button class="btn btn-sm btn-danger"
+													onclick="deleteclass('${teacherInfo.id}')"
+													data-rel="tooltip">
+													<span> <i class="icon-trash bigger-120"></i>删除
+													</span>
+												</button>
+											</div>  -->
+													<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+														<button class="btn btn-sm btn-purple" onclick="editeTeacher('${teacherInfo.id}');" data-rel="tooltip">
+													<span> <i class="icon-edit bigger-120"></i>编辑
+													</span>
+												</button>
+													</div>
+												</td>
+											</tr>
+										</#list>
+									</tbody>
+								</table>
+							</div>
+							<#include "/common/common_page.html">
+								<!-- /.table-responsive -->
+						</div>
+						<!-- /span -->
+					</div>
+					<!-- /row -->
+					<!-- PAGE CONTENT ENDS -->
+				</div>
+				<!-- /.col -->
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /.page-content -->
+
+		<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse"> <i class="icon-double-angle-up icon-only bigger-110"></i>
+		</a>
+		<div id="edit_teacher-modal" class="modal fade" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="blue bigger">编辑教师</h4>
+					</div>
+
+					<div class="modal-body overflow-visible">
+						<form id="edit_teacher-form" class="form-horizontal" role="form" action="${ctx}/teacher/ajax/edit" method="post">
+
+						</form>
+					</div>
+
+					<div class="modal-footer">
+						<button class="btn btn-sm btn-info" onclick="$('#edit_teacher-form').submit();">
+						<i class="icon-ok"></i> 保存
+					</button>
+						<button class="btn btn-sm" data-dismiss="modal">
+						<i class="icon-remove"></i> 取消
+					</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="set_class-modal" class="modal fade" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="blue bigger">设置班级</h4>
+					</div>
+
+					<div class="modal-body overflow-visible">
+						<form id="set_class-form" class="form-horizontal" role="form" action="${ctx}/teacher/set_class" method="post">
+							<input type="hidden" name="teacher_id" id="teacher_id" value="">
+							<div class="row">
+								<div class="col-xs-12">
+									<div class="from-group">
+										<div class="input-group">
+											<!--<div class="from-group">-->
+											<label class="col-sm-3 control-label no-padding-right">选择班级：</label>
+											<div class="col-sm-8">
+												<div id="grade_no" class="input-no" style="width: 250px;">
+												</div>
+												<input name="class_ids" value="" id="class_ids" type="hidden" class="input-small" />
+											</div>
+										</div>
+										<label class="col-sm-11 control-label no-padding-right">  </label>
+										<div class="from-group">
+											<label class="col-sm-3 control-label no-padding-right">目前任教班级：</label>
+											<div class="col-sm-8">
+												<div id="has_teach">
+												</div>
+												<input name="set_class_ids" value="" id="set_class_ids" type="hidden" class="input-small" />
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+
+					<div class="modal-footer">
+						<button class="btn btn-sm btn-info" id="submit_set_class" onclick="submitSetClass();">
+						<i class="icon-ok"></i> 提交
+					</button>
+						<button class="btn btn-sm" data-dismiss="modal">
+						<i class="icon-remove"></i> 取消
+					</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- inline scripts related to this page -->
+		<script type="text/javascript">
+			/* 编辑教师 */
+			function editeTeacher(id) {
+				$('#edit_teacher-modal').modal('show');
+				$('#edit_teacher-form').load("${ctx}/teacher/getUpdate?id=" + id, function() {});
+			}
+
+			function deleteclass(id) {
+				$.messager.confirm("删除教师", "确定要删除该教师信息吗!", function() {
+					window.open("${ctx}/teacher/delete?id=" + id, "_self");
+				});
+			}
+
+			function addTeacher(id) {
+				var href = "${ctx}/school/get_school_list";
+				$.ajax({
+					url: href,
+					async: false,
+					type: "POST",
+					data: {
+						sss: ""
+					},
+					success: function(data, status) {
+						data = $.parseJSON(data);
+						var chapter = document.getElementById("school_id");
+						var chapteOption = "";
+						for (var i in data.result) {
+							chapteOption += "<option value=" + data.result[i].school_id + ">" + data.result[i].school_name + "</option>";
+						}
+						chapter.innerHTML = chapteOption;
+					}
+				});
+				$('#add_teacher-modal').modal('show');
+			}
+
+			function setClass(id, school_Id) {
+				$('#teacher_id').val(id);
+				var href = "${ctx}/class/get_class_by_id";
+				$.ajax({
+					url: href,
+					async: false,
+					type: "POST",
+					data: {
+						teacher_id: id
+					},
+					success: function(data, status) {
+						data = $.parseJSON(data);
+						var classNo = document.getElementById("has_teach");
+						var classNoOption = "";
+						for (var i in data.result) {
+//							classNoOption += "<font size='3px' color='red'>" + data.result[i].grade_no + "</font> ";
+							classNoOption += "<input name='set_class_id' type='checkbox' checked='checked' value='" + data.result[i].class_id + "'/><font size='3px' color='red'>" + data.result[i].grade_no + "</font> ";
+							if ((i + 1) % 3 == 0)
+								classNoOption += "<br>";
+						}
+						if (data.result.length <= 0) {
+							classNoOption = "<div> <font size='5px' color='red'>该教师目前无任教班级。</font></div>";
+						}
+						classNo.innerHTML = "";
+						classNo.innerHTML = classNoOption;
+					}
+				});
+				var href2 = "${ctx}/class/get_teacher_class";
+				$.ajax({
+					url: href2,
+					async: false,
+					type: "POST",
+					data: {
+						schoolId: school_Id
+					},
+					success: function(data, status) {
+						data = $.parseJSON(data);
+						var classNo = document.getElementById("grade_no");
+						var classNoOption = "";
+						for (var i in data.result) {
+							classNoOption += "<input name='class_id' type='checkbox' value='" + data.result[i].class_id + "'/>" + data.result[i].grade_no + " ";
+							if ((i + 1) % 3 == 0)
+								classNoOption += "<br>";
+						}
+						$('#submit_set_class').removeClass('disabled').addClass('btn-info');
+						if (data.result.length <= 0) {
+							classNoOption = "<div> <font size='5px' color='red'>该学校目前无班级未设置教师。</font></div>";
+//							$('#submit_set_class').removeClass('btn-info').addClass('disabled');
+						}
+						classNo.innerHTML = "";
+						classNo.innerHTML = classNoOption;
+					}
+				});
+				$('#set_class-modal').modal('show');
+			}
+			/*     $('#school_id').change(function () {  
+			    			alert($('#school_id').find("option:selected").val());
+							var href2="${ctx}/class/get_teacher_class";
+							$.ajax({
+					    	  url:href2,
+					    	  async: false,
+					          type: "POST",
+					          data:{schoolId:$('#school_id').find("option:selected").val()},
+					    	  success:function(data,status) {
+					    	  				data = $.parseJSON(data);
+											var classNo = document.getElementById("grade_no");
+											var classNoOption = "";
+											for(var i in data.result){
+												classNoOption += "<input name='class_id' type='checkbox' value='"+data.result[i].class_id+"'/>"+data.result[i].grade_no+" ";
+												if((i+1)%3==0)
+												classNoOption += "<br>";
+											}
+					    	  				classNo.innerHTML = "";
+											classNo.innerHTML = classNoOption;
+					    	 			 } 
+						
+							 });
+							
+				}); */
+			function submitSetClass() {
+				var classId = "";
+				var setClassId = "";
+				var classList = document.getElementsByName("class_id");
+				var checkNum = 0;
+				for (var i = 0; i < classList.length; i++) {
+					if (classList[i].checked) {
+						classId += classList[i].value + ",";
+						checkNum++;
+					}
+				}
+				var setClassList = document.getElementsByName("set_class_id");
+				var setCheckNum = 0;
+				for (var i = 0; i < setClassList.length; i++) {
+					if (setClassList[i].checked) {
+						setClassId += setClassList[i].value + ",";
+					}else{
+						setCheckNum++;
+					}
+				}
+				if (checkNum == 0 && setCheckNum == 0) {
+					alert("请选择至少一个班级或去掉一个班级！");
+					return false;
+				}
+				$('#class_ids').val(classId);
+				$('#set_class_ids').val(setClassId);
+				$('#set_class-form').submit();
+			}
+
+			function editclass(id) {
+				$('#edit_teacher-modal').modal('show');
+				$('#edit_teacher-form').load(
+					"${ctx}/teacher/edit?id=" + id,
+					function() {}
+				);
+			}
+			$(function() {
+				$("#set_class-form").validate();
+				$("#set_class-form").bind(
+					'submit',
+					function() {
+						//校验表单
+						if (!$(this).valid()) {
+							return false;
+						}
+						ajaxSubmit(this, function(response) {
+							response = $.parseJSON(response);
+							if (response.status == 1) {
+								alert("设置成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						});
+						return false;
+					});
+				$("#add_teacher-form").validate();
+				$("#add_teacher-form").bind(
+					'submit',
+					function() {
+						//校验表单
+						if (!$(this).valid()) {
+							return false;
+						}
+						ajaxSubmit(this, function(response) {
+							response = $.parseJSON(response);
+							if (response.status == 1) {
+								alert("添加成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						});
+						return false;
+					});
+				$("#edit_teacher-form").validate();
+				$("#edit_teacher-form").bind(
+					'submit',
+					function() {
+						//校验表单
+						if (!$(this).valid()) {
+							return false;
+						}
+						ajaxSubmit(this, function(response) {
+							response = $.parseJSON(response);
+							if (response.status == 1) {
+								alert("修改成功！");
+								window.location.reload();
+							} else {
+								alert(response.errormsg);
+							}
+						});
+						return false;
+					});
+			});
+		</script>
+	</body>
+
+</html>

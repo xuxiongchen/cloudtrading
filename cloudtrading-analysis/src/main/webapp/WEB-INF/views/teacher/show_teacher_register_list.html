@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta name="decorator" content="default" />
+		<title>注册教师审核管理</title>
+	</head>
+
+	<body>
+
+		<div class="page-content">
+			<div class="page-header">
+				<h1>注册教师审核管理</h1>
+			</div>
+			<!-- /.page-header -->
+			<div class="row">
+				<div class="col-xs-12">
+					<!-- PAGE CONTENT BEGINS -->
+					<form class="form-inline" action="${ctx}/teacher_register/search" method="post">
+						<div class="row">
+							<div class="col-xs-12 col-sm-8">
+								<div class="input-group">
+									用户名：<input name="userName" value="${teacherRegister.userName}" type="text" class="input-small" /> 
+									真实姓名：<input name="realName" value="${teacherRegister.realName}" type="text" class="input-small" /> 
+									性别：<input name="sex" value="${teacherRegister.sex}" type="text" class="input-small" /> 
+									手机号：<input name="phone" value="${teacherRegister.phone}" type="text" class="input-small" /> 
+									校名：<input name="schoolName" value="${teacherRegister.schoolName}" type="text" class="input-small" /> 
+										&nbsp;
+									<button type="submit" class="btn btn-purple btn-sm">
+									查询 <i class="icon-search icon-on-right bigger-110"></i>
+								</button>
+								</div>
+							</div>
+						</div>
+					</form>
+
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="table-responsive">
+								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+									<thead>
+										<tr>
+											<td style="display: none;"></td>
+											<th>用户名</th>
+											<th>真实姓名</th>
+											<th>性别</th>
+											<th>手机号</th>
+											<th>校名</th>
+											<th>省</th>
+											<th>市</th>
+											<th>区</th>
+											<th>所任班级</th>
+											<td></td>
+											<td></td>
+										</tr>
+									</thead>
+									<tbody>
+										<#list teacherRegisterList as teacherRegister>
+											<tr>
+												<td style="display: none;">${teacherRegister.id}</td>
+												<td>${teacherRegister.user_name}</td>
+												<td>${teacherRegister.real_name}</td>
+												<td>${teacherRegister.sex}</td>
+												<td>${teacherRegister.phone}</td>
+												<td>${teacherRegister.school_name}</td>
+												<td>${teacherRegister.province}</td>
+												<td>${teacherRegister.city}</td>
+												<td>${teacherRegister.area}</td>
+												<td>
+													<#list teacherRegister.classList as class>
+														<#if class.period==1>小</#if>
+														<#if class.period==2>初</#if>
+														<#if class.period==3>高</#if>
+														${class.classGrade}(${class.classNo})班、
+													</#list>
+												</td>
+												<td>
+													<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+														<button class="btn btn-sm btn-purple" onclick="pass('${teacherRegister.id}');" data-rel="tooltip">
+													<span> 通过
+													</span>
+												</button>
+													</div>
+												</td>
+
+												<td>
+													<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+														<button class="btn btn-sm btn-danger" onclick="noPass('${teacherRegister.id}');" data-rel="tooltip">
+													<span> 不通过
+													</span>
+												</button>
+													</div>
+												</td>
+											</tr>
+										</#list>
+									</tbody>
+								</table>
+							</div>
+							<script type="text/javascript">
+								function noPass(id) {
+									$.ajax({
+										type: "post",
+										url: "${ctx}/teacher/teacher_register_no_pass",
+										async: true,
+										data: {
+											id: id
+										},
+										success: function(data) {
+											data = $.parseJSON(data);
+											if (data.status == "1") {
+												alert("操作成功");
+												window.location.reload();
+											} else {
+												alert(data.errormsg);
+											}
+										}
+									});
+								}
+								function pass(id) {
+									$.ajax({
+										type: "post",
+										url: "${ctx}/teacher/teacher_register_pass",
+										async: true,
+										data: {
+											id: id
+										},
+										success: function(data) {
+											data = $.parseJSON(data);
+											if (data.status == "1") {
+												alert("操作成功");
+												window.location.reload();
+											} else {
+												alert(data.errormsg);
+											}
+										}
+									});
+								}
+							</script>
+							<#include "/common/common_page.html">
+								<!-- /.table-responsive -->
+						</div>
+						<!-- /span -->
+					</div>
+					<!-- /row -->
+					<!-- PAGE CONTENT ENDS -->
+				</div>
+				<!-- /.col -->
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /.page-content -->
+	</body>
+
+</html>

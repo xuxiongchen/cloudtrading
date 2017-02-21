@@ -1,0 +1,30 @@
+<dbpool-config>
+	<debug>0</debug>
+	<dbpool name="default">
+		<property name="driverClassName">com.mysql.jdbc.Driver</property>
+		<!-- 
+		<property name="url">jdbc:mysql://120.25.144.96:3306/matheasy?useUnicode=true&amp;characterEncoding=utf8</property>
+		<property name="username">root</property>
+		<property name="password">123456</property>
+		 -->
+		
+		<property name="url">jdbc:mysql://192.168.1.10:3306/cloudtrading?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull</property>
+		<property name="username">root</property>
+		<property name="password">123456</property>
+		
+		<property name="minPoolSize">5</property>
+		<property name="initialPoolSize">5</property>
+		<property name="maxPoolSize">100</property>
+		<property name="checkoutTimeout">5000</property>
+		<property name="maxIdleTime">60</property>
+
+		<property name="acquireIncrement">5</property>
+		<property name="acquireRetryAttempts">30</property>
+		<property name="acquireRetryDelay">1000</property>
+		<property name="idleConnectionTestPeriod">60</property>
+
+		<property name="maxStatements">200</property>
+		<property name="maxStatementsPerConnection">0</property>
+		<property name="numHelperThreads">5</property>
+	</dbpool>
+</dbpool-config>

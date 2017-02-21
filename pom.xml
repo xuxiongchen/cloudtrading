@@ -1,0 +1,188 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.cloudtrading</groupId>
+  <artifactId>cloudtrading-pom</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>${project.groupId}:${project.artifactId}</name>
+  <description>云交易</description>
+  <url>https://github.com/cxxbrother/cloudtrading</url>
+    <developers>
+        <developer>
+            <name>xuxiong chen</name>
+            <email>490374768@qq.com</email>
+            <organization>xuxiong chen</organization>
+            <organizationUrl>null</organizationUrl>
+        </developer>
+    </developers>
+    <modules>
+        <module>cloudtrading-analysis</module>
+        <module>cloudtrading-collection</module>
+        <module>cloudtrading-warehouse</module>
+        <module>cloudtrading-pub</module>
+    </modules>
+  	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<spring.version>4.1.1.RELEASE</spring.version>
+		<slf4j.version>1.7.7</slf4j.version>
+		<aspectj.version>1.8.3</aspectj.version>
+		<jackson.version>2.4.3</jackson.version>
+		<mysql.connector.version>5.1.33</mysql.connector.version>
+		<freemarker.version>2.3.21</freemarker.version>
+	</properties>
+
+	<dependencies>
+		<dependency>  
+		    <groupId>net.java.dev.jna</groupId>  
+		    <artifactId>jna</artifactId>  
+		    <version>4.2.1</version>  
+		</dependency>  
+		<!-- https://mvnrepository.com/artifact/net.sourceforge.tess4j/tess4j -->
+		<dependency>  
+		    <groupId>net.sourceforge.tess4j</groupId>  
+		    <artifactId>tess4j</artifactId>  
+		    <version>2.0.1</version>  
+		    <exclusions>  
+		        <exclusion>  
+		            <groupId>com.sun.jna</groupId>  
+		            <artifactId>jna</artifactId>  
+		        </exclusion>  
+		    </exclusions>  
+		</dependency>  
+ 		<dependency>  
+		    <groupId>net.sourceforge.tess4j</groupId>  
+		    <artifactId>tess4j</artifactId>  
+		    <version>3.0.0</version>  
+		</dependency>  
+		<dependency>  
+		    <groupId>org.projectlombok</groupId>  
+		    <artifactId>lombok</artifactId>  
+		    <version>1.16.10</version>  
+		</dependency>  
+
+
+
+		<dependency>
+			<groupId>com.huisa.common</groupId>
+			<artifactId>bean-mapper</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.huisa.common</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.huisa.common</groupId>
+			<artifactId>cacheclient</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.huisa.common</groupId>
+			<artifactId>huisadb</artifactId>
+			<version>1.1-SNAPSHOT</version>
+		</dependency>
+		<!-- spring begin -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+		<!-- srping end -->
+
+		<!-- j2ee libraries begin -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- spring mvc -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<!-- j2ee libraries end -->
+
+
+		<!-- test begin -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		
+	
+		
+		<!-- test end -->
+	</dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
